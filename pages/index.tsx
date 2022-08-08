@@ -5,13 +5,13 @@ import { Header } from '../components/Header';
 
 const Home: NextPage = () => {
   return (
-    <div className='min-h-screen bg-darkblue'>
+    <div className='min-h-screen bg-lightblue'>
       <Head>
         <title>Crynance</title>
         <meta name='crypto finance tracker' content='' />
         <link rel='icon' href='/favicon.ico' />
       </Head>
-      <div className='container max-w-5xl mx-auto'>
+      <div className='container max-w-3xl mx-auto'>
         <Header />
       </div>
     </div>
