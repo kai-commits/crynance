@@ -1,6 +1,6 @@
 export const Header = (): JSX.Element => {
   return (
-    <div className='flex items-center flex-col w-full absolute bg-darkblue'>
+    <div className='flex items-center flex-col w-full sticky bg-darkblue'>
       <div className='flex flex-col items-center'>
         <div className='text-lightpink text-3xl font-bold cursor-pointer p-4'>
           Crynance
