@@ -13,7 +13,7 @@ module.exports = {
         'blackeye-blue': '#121629',
         darkblue: '#232946',
         lightblue: '#b8c1ec',
-        offwhite: '#fffffe',
+        offwhite: '#eeeeee',
         lightpink: '#eebbc3',
       },
     },
