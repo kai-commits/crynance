@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { Search } from './Search';
 
 export const Header = (): JSX.Element => {
@@ -13,12 +14,16 @@ export const Header = (): JSX.Element => {
             <div className='text-lightblue p-4'>$400</div>
           </div>
           <div className='flex justify-between w-full mb-8'>
-            <button className='bg-lightpink px-4 py-2 rounded font-bold text-darkblue cursor-pointer flex-1 mr-5'>
-              Buy
-            </button>
-            <button className='bg-lightpink px-4 py-2 rounded font-bold text-darkblue cursor-pointer flex-1 ml-5'>
-              Sell
-            </button>
+            <Link href='/buy'>
+              <button className='bg-lightpink px-4 py-2 rounded font-bold text-darkblue cursor-pointer flex-1 mr-5'>
+                Buy
+              </button>
+            </Link>
+            <Link href='/sell'>
+              <button className='bg-lightpink px-4 py-2 rounded font-bold text-darkblue cursor-pointer flex-1 ml-5'>
+                Sell
+              </button>
+            </Link>
           </div>
         </div>
       </div>
