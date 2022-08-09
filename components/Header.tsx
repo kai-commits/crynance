@@ -1,7 +1,9 @@
+import { Search } from './Search';
+
 export const Header = (): JSX.Element => {
   return (
-    <div className='bg-darkblue'>
-      <div className='flex items-center flex-col w-full sticky max-w-3xl mx-auto'>
+    <div className='bg-darkblue sticky w-full top-0'>
+      <div className='flex items-center flex-col w-full max-w-3xl mx-auto'>
         <div className='flex flex-col items-center'>
           <div className='text-lightpink text-3xl font-bold cursor-pointer p-4'>
             Crynance
@@ -18,6 +20,7 @@ export const Header = (): JSX.Element => {
           </button>
         </div>
       </div>
+      <Search />
     </div>
   );
 };

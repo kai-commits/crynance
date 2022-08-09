@@ -18,7 +18,7 @@ export const Search = () => {
             </div>
           <button
             type='submit'
-            className='text-offwhite right-2.5 bottom-2.5 bg-blackeye-blue border-lightpink border-2 font-medium rounded text-sm px-3 py-1 mx-3'
+            className='text-offwhite right-2.5 bottom-2.5 bg-blackeye-blue border-lightpink border-2 font-medium rounded text-sm px-3 py-1 mx-2'
           >
             Search
           </button>
