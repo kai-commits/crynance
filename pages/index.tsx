@@ -6,13 +6,13 @@ import { Nav } from '../components/Nav';
 
 const Home: NextPage = () => {
   return (
-    <div className='h-screen mx-auto'>
+    <div>
       <Head>
         <title>Crynance</title>
         <meta name='crypto finance tracker' content='' />
         <link rel='icon' href='/favicon.ico' />
       </Head>
-      <div className=''>
+      <div className='flex flex-col justify-between h-screen mx-auto'>
         <Header />
         <Main />
         <Nav />

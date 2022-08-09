@@ -4,23 +4,25 @@ export const Search = () => {
   return (
     <div className='bg-blackeye-blue'>
       <form>
-        <div className='relative max-w-3xl mx-auto'>
-          <div className='flex absolute inset-y-0 left-0 items-center pl-2 pointer-events-none mx-3'>
-            <SearchIcon className='text-lightblue'/>
-          </div>
-          <input
-            type='search'
-            id='default-search'
-            className='block p-4 pl-14 w-full text-sm text-offwhite bg-blackeye-blue focus-visible:outline-none mx-auto'
-            placeholder='Search coins...'
-            required
-          />
+        <div className='max-w-3xl mx-auto'>
+          <div className='flex justify-between items-center py-2 mx-3'>
+            <div className='flex grow mx-2'>
+              <SearchIcon className='text-lightblue' />
+              <input
+                type='search'
+                id='default-search'
+                className=' w-full text-sm pl-2 text-offwhite bg-blackeye-blue focus-visible:outline-none placeholder:text-lightblue placeholder:italic mx-auto'
+                placeholder='Search coins...'
+                required
+              />
+            </div>
           <button
             type='submit'
-            className='text-offwhite absolute right-2.5 bottom-2.5 bg-blackeye-blue border-lightpink border-2 font-medium rounded text-sm px-3 py-1 mx-3'
+            className='text-offwhite right-2.5 bottom-2.5 bg-blackeye-blue border-lightpink border-2 font-medium rounded text-sm px-3 py-1 mx-3'
           >
             Search
           </button>
+          </div>
         </div>
       </form>
     </div>

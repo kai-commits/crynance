@@ -2,7 +2,7 @@ import Link from 'next/link';
 
 export const Nav = (): JSX.Element => {
   return (
-    <div className='bg-darkblue bottom-0 absolute w-full'>
+    <div className='bg-darkblue w-full'>
       <div className='flex items-center justify-between text-offwhite font-bold w-full max-w-3xl mx-auto h-12'>
         <Link href='/'>
           <button className='cursor-pointer mx-6'>Home</button>
