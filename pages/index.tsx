@@ -12,7 +12,7 @@ const Home: NextPage = () => {
         <meta name='crypto finance tracker' content='' />
         <link rel='icon' href='/favicon.ico' />
       </Head>
-      <div className='flex flex-col justify-between h-max mx-auto'>
+      <div className='flex flex-col justify-between h-max mx-auto min-w-fit'>
         <Header />
         <Main />
         <Nav />
