@@ -31,9 +31,10 @@ interface CoinGeckoMarkets {
 }
 
 interface ParsedMarkets {
-  id: number;
+  id: string;
   symbol: string;
   name: string;
+  logo: string;
   currentMarketValue: number;
   priceChangePercentage: number;
 }
@@ -51,6 +52,7 @@ export default async function handler(
       id: coin.id,
       symbol: coin.symbol,
       name: coin.name,
+      logo: coin.image,
       currentMarketValue: coin.current_price,
       priceChangePercentage: coin.price_change_percentage_24h,
     };
