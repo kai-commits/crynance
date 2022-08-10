@@ -27,6 +27,7 @@ export const Main = (): JSX.Element => {
           symbol={coin.symbol}
           logo={coin.logo}
           currentMarketValue={coin.currentMarketValue}
+          priceChangePercentage={coin.priceChangePercentage}
         />
       ))}
     </div>
