@@ -12,7 +12,7 @@ export const Coin = ({
   ownedValue: number;
 }): JSX.Element => {
   return (
-    <div className='w-full bg-offwhite max-w-3xl py-2 mt-3 rounded'>
+    <div className='w-full bg-offwhite max-w-3xl py-2 mt-3 rounded cursor-pointer'>
       <div className='flex justify-between items-center'>
         <div className='flex items-center mx-1'>
           <Smile className='mx-2 h-9 w-9' />
