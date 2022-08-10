@@ -3,7 +3,7 @@ import { Search } from './Search';
 
 export const Header = (): JSX.Element => {
   return (
-    <div className='bg-darkblue sticky w-full top-0'>
+    <div className='bg-darkblue sticky w-full top-0 z-[100]'>
       <div className='px-5'>
         <div className='flex items-center flex-col w-full max-w-3xl mx-auto'>
           <div className='flex flex-col items-center'>
