@@ -13,7 +13,7 @@ const Home: NextPage = () => {
         <link rel='icon' href='/favicon.ico' />
       </Head>
       <div className='flex flex-col justify-between h-max mx-auto min-w-fit'>
-        <Header />
+        <Header title='Crynance' search={true} />
         <Main />
         <Nav />
       </div>

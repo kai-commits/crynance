@@ -1,14 +1,14 @@
 import Link from 'next/link';
 import { Search } from './Search';
 
-export const Header = (): JSX.Element => {
+export const Header = ({ title, search }: { title: string, search: boolean }): JSX.Element => {
   return (
     <div className='bg-darkblue sticky w-full top-0 z-[100]'>
       <div className='px-5'>
         <div className='flex items-center flex-col w-full max-w-3xl mx-auto'>
           <div className='flex flex-col items-center'>
             <div className='text-lightpink text-3xl font-bold cursor-pointer p-4'>
-              Crynance
+              {title}
             </div>
             <div className='text-offwhite text-5xl'>$500</div>
             <div className='text-lightblue p-4'>$400</div>
@@ -27,7 +27,7 @@ export const Header = (): JSX.Element => {
           </div>
         </div>
       </div>
-      <Search />
+      {search ?? <Search />}
     </div>
   );
 };
