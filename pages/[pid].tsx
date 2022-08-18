@@ -8,8 +8,11 @@ const Coin: NextPage = () => {
 
   return (
     <div className='flex flex-col justify-between min-w-fit'>
-      <Header title={`${pid}`} search={false} />
-      <div className='flex grow bg-lightblue h-screen'></div>
+      <div className='flex grow bg-lightblue h-screen'>
+        <div className='flex justify-center mx-auto'>
+          <div className='text-darkblue text-3xl font-bold cursor-pointer p-4'>{pid}</div>
+        </div>
+      </div>
       <Nav />
     </div>
   );

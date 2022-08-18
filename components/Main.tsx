@@ -23,6 +23,7 @@ export const Main = (): JSX.Element => {
       {marketsResponse?.map((coin: ParsedMarkets) => (
         <Coin
           key={coin.id}
+          id={coin.id}
           name={coin.name}
           symbol={coin.symbol}
           logo={coin.logo}
