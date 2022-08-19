@@ -15,83 +15,52 @@ export const LineChart = () => {
 
   const options = {
     chart: {
-      type: 'line',
-      backgroundColor: 'white',
+      backgroundColor: null,
+      zoomType: 'x',
+      type: 'area',
     },
     title: {
-      text: 'Line Chart',
+      text: '',
     },
     series: [
       {
+        name: 'name',
         data: coinMarketRangeResponse,
+        color: 'rgba(255,0,0,0.5)',
       },
     ],
     credits: {
       enabled: false,
     },
-    // chart: {
-    //   zoomType: 'x',
-    // },
-    // title: {
-    //   text: 'USD to EUR exchange rate over time',
-    // },
-    // // subtitle: {
-    // //   text:
-    // //     document?.ontouchstart === undefined
-    // //       ? 'Click and drag in the plot area to zoom in'
-    // //       : 'Pinch the chart to zoom in',
-    // // },
-    // xAxis: {
-    //   type: 'datetime',
-    // },
-    // yAxis: {
-    //   title: {
-    //     text: 'Exchange rate',
-    //   },
-    // },
-    // legend: {
-    //   enabled: false,
-    // },
-    // plotOptions: {
-    //   area: {
-    //     fillColor: {
-    //       linearGradient: {
-    //         x1: 0,
-    //         y1: 0,
-    //         x2: 0,
-    //         y2: 1,
-    //       },
-    //       // stops: [
-    //       //   [0, Highcharts.getOptions().colors[0]],
-    //       //   [
-    //       //     1,
-    //       //     Highcharts.color(Highcharts.getOptions().colors[0])
-    //       //       .setOpacity(0)
-    //       //       .get('rgba'),
-    //       //   ],
-    //       // ],
-    //     },
-    //     marker: {
-    //       radius: 2,
-    //     },
-    //     lineWidth: 1,
-    //     states: {
-    //       hover: {
-    //         lineWidth: 1,
-    //       },
-    //     },
-    //     threshold: null,
-    //   },
-    // },
-
-    // series: [
-    //   {
-    //     type: 'area',
-    //     name: 'USD to EUR',
-    //     data: [6, 2, 5, 1, 3, 1],
-    //   },
-    // ],
+    xAxis: {
+      type: 'datetime',
+      visible: false,
+    },
+    yAxis: {
+      visible: false,
+    },
+    legend: {
+      enabled: false,
+    },
+    plotOptions: {
+      area: {
+        threshold: null,
+        fillColor: {
+          linearGradient: {
+            x1: 0,
+            y1: 0,
+            x2: 0,
+            y2: 1,
+          },
+          stops: [
+            [0, 'rgba(255,0,0,0.3)'],
+            [1, 'rgba(255,0,0,0)'],
+          ],
+        },
+      },
+    },
   };
+
   return (
     <div>
       <HighchartsReact highcharts={Highcharts} options={options} />
