@@ -1,5 +1,6 @@
 import { NextPage } from 'next';
 import { useRouter } from 'next/router';
+import { LineChart } from '../components/graphs/LineChart';
 import { Header } from '../components/Header';
 import { Nav } from '../components/Nav';
 
@@ -11,6 +12,7 @@ const Coin: NextPage = () => {
       <div className='flex grow bg-lightblue h-screen'>
         <div className='flex justify-center mx-auto'>
           <div className='text-darkblue text-3xl font-bold cursor-pointer p-4'>{pid}</div>
+          <LineChart />
         </div>
       </div>
       <Nav />
