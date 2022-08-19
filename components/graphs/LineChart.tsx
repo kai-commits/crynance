@@ -1,11 +1,8 @@
 import HighchartsReact from 'highcharts-react-official';
 import Highcharts from 'highcharts';
-import axios from 'axios';
 import useSWR from 'swr';
+import { axiosFetcher } from '../../helpers/axiosFetcher';
 
-const axiosFetcher = async (url: string) => {
-  return await axios.get(url).then((res) => res.data);
-};
 
 export const LineChart = () => {
   const { data: coinMarketRangeResponse } = useSWR(
@@ -16,15 +13,17 @@ export const LineChart = () => {
   const options = {
     chart: {
       backgroundColor: null,
-      zoomType: 'x',
+      // zoomType: 'x',
       type: 'area',
+      spacingLeft: -8,
+      spacingRight: -8,
     },
     title: {
       text: '',
     },
     series: [
       {
-        name: 'name',
+        name: 'Bitcoin',
         data: coinMarketRangeResponse,
         color: 'rgba(255,0,0,0.5)',
       },
@@ -37,6 +36,8 @@ export const LineChart = () => {
       visible: false,
     },
     yAxis: {
+      gridLineWidth: 0,
+      title: '',
       visible: false,
     },
     legend: {
@@ -54,7 +55,8 @@ export const LineChart = () => {
           },
           stops: [
             [0, 'rgba(255,0,0,0.3)'],
-            [1, 'rgba(255,0,0,0)'],
+            [0.5, 'rgba(255,0,0,0.1)'],
+            [1, 'rgba(255,0,0,0.0)'],
           ],
         },
       },
