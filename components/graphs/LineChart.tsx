@@ -1,18 +1,25 @@
 import HighchartsReact from 'highcharts-react-official';
-import Highcharts from 'highcharts';
+import Highcharts, { Options } from 'highcharts';
 import useSWR from 'swr';
-import { axiosFetcher } from '../../helpers/axiosFetcher';
+import axios from 'axios';
 
+interface LineChartProps {
+  queryParams: string;
+}
 
-export const LineChart = () => {
+const axiosFetcher = async (url: string, queryParams = '') => {
+  return await axios.get(`${url}${queryParams}`).then((res) => res.data);
+};
+
+export const LineChart = ({ queryParams }: LineChartProps) => {
   const { data: coinMarketRangeResponse } = useSWR(
-    '/api/coinMarketRange',
+    ['/api/coinMarketRange', queryParams],
     axiosFetcher
   );
 
-  const options = {
+  const options: Options = {
     chart: {
-      backgroundColor: null,
+      backgroundColor: undefined,
       // zoomType: 'x',
       type: 'area',
       spacingLeft: -8,
@@ -23,6 +30,7 @@ export const LineChart = () => {
     },
     series: [
       {
+        type: 'area',
         name: 'Bitcoin',
         data: coinMarketRangeResponse,
         color: 'rgba(255,0,0,0.5)',
@@ -37,7 +45,6 @@ export const LineChart = () => {
     },
     yAxis: {
       gridLineWidth: 0,
-      title: '',
       visible: false,
     },
     legend: {
