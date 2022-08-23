@@ -7,20 +7,20 @@ import classNames from 'classnames';
 
 interface TimeRangeButton {
   name: string;
-  queryParams: string;
+  queryString: string;
 }
 
 const CoinPage: NextPage = () => {
   const { pid } = useRouter().query;
   const [activeTimeButton, setActiveTimeButton] = useState('1H');
-  const [queryParams, setQueryParams] = useState('');
+  const [queryParams, setQueryParams] = useState('?vs_currency=usd&from=1660299560&to=1660904360');
 
   const timeRangeButtons: TimeRangeButton[] = [
-    { name: '1H', queryParams: `${pid}/market_chart/range?vs_currency=usd&from=1660299560&to=1660904360` },
-    { name: '1D', queryParams: '' },
-    { name: '1W', queryParams: '' },
-    { name: '1M', queryParams: '' },
-    { name: '1Y', queryParams: '' },
+    { name: '1H', queryString: `?vs_currency=usd&from=1660299560&to=1660904360` },
+    { name: '1D', queryString: `?vs_currency=usd&from=1660299560&to=1660303160` },
+    { name: '1W', queryString: `?vs_currency=usd&from=1660299560&to=1660904360` },
+    { name: '1M', queryString: `?vs_currency=usd&from=1660299560&to=1660904360` },
+    { name: '1Y', queryString: `?vs_currency=usd&from=1660299560&to=1660904360` },
   ];
 
   const timeRangeButtonClasses = (button: TimeRangeButton): string => {
@@ -32,6 +32,7 @@ const CoinPage: NextPage = () => {
 
   const timeButtonHandler = (button: TimeRangeButton) => {
     setActiveTimeButton(button.name);
+    setQueryParams(button.queryString);
   };
 
   return (
@@ -41,7 +42,7 @@ const CoinPage: NextPage = () => {
           <div className='flex justify-center text-darkblue text-3xl font-bold cursor-pointer p-4'>
             {pid}
           </div>
-          <LineChart queryParams={queryParams} />
+          <LineChart queryParams={queryParams} pid={pid} />
           <div className='flex justify-between'>
             {timeRangeButtons.map((button, index) => (
               <button

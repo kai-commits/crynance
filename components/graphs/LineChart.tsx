@@ -5,15 +5,16 @@ import axios from 'axios';
 
 interface LineChartProps {
   queryParams: string;
+  pid: string | string[] | undefined;
 }
 
 const axiosFetcher = async (url: string, queryParams = '') => {
   return await axios.get(`${url}${queryParams}`).then((res) => res.data);
 };
 
-export const LineChart = ({ queryParams }: LineChartProps) => {
+export const LineChart = ({ queryParams, pid }: LineChartProps) => {
   const { data: coinMarketRangeResponse } = useSWR(
-    ['/api/coinMarketRange', queryParams],
+    [`/api/coins/${pid}`, queryParams],
     axiosFetcher
   );
 
