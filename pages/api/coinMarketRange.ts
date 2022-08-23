@@ -6,7 +6,7 @@ export default async function handler(
   response: NextApiResponse
 ) {
   const { data: marketData } = await axios.get(
-    'https://api.coingecko.com/api/v3/coins/bitcoin/market_chart/range?vs_currency=usd&from=1660299560&to=1660904360'
+    'https://api.coingecko.com/api/v3/coins/'
   );
 
   response.status(200).send(marketData.prices);
