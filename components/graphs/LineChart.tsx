@@ -2,7 +2,6 @@ import HighchartsReact from 'highcharts-react-official';
 import Highcharts, { Options } from 'highcharts';
 import useSWR from 'swr';
 import axios from 'axios';
-import { useEffect, useState } from 'react';
 
 interface LineChartProps {
   queryParams: string;
@@ -18,7 +17,6 @@ export const LineChart = ({ queryParams, pid }: LineChartProps) => {
     [`/api/coins/${pid}`, queryParams],
     axiosFetcher
   );
-  console.log(queryParams);
 
   const options: Options = {
     chart: {
@@ -75,7 +73,7 @@ export const LineChart = ({ queryParams, pid }: LineChartProps) => {
 
   return (
     <div>
-      {queryParams && (
+      {coinMarketRangeResponse && (
         <HighchartsReact highcharts={Highcharts} options={options} />
       )}
     </div>
