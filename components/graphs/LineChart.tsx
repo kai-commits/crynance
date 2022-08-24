@@ -1,69 +1,22 @@
 import HighchartsReact from 'highcharts-react-official';
 import Highcharts, { Options } from 'highcharts';
-import useSWRImmutable from 'swr/immutable';
+import useSWR from 'swr';
 import axios from 'axios';
-import { useEffect, useState } from 'react';
 
 interface LineChartProps {
-  queryParams: { name: string; queryString: string }[];
+  queryParams: string;
   pid: string | string[] | undefined;
-  currentTimeRange: string;
 }
 
 const axiosFetcher = async (url: string, queryParams = '') => {
   return await axios.get(`${url}${queryParams}`).then((res) => res.data);
 };
 
-export const LineChart = ({
-  queryParams,
-  pid,
-  currentTimeRange,
-}: LineChartProps) => {
-  const { data: coinMarket1DayResponse } = useSWRImmutable(
-    [`/api/coins/${pid}`, queryParams[0].queryString],
+export const LineChart = ({ queryParams, pid }: LineChartProps) => {
+  const { data: coinMarketRangeResponse } = useSWR(
+    [`/api/coins/${pid}`, queryParams],
     axiosFetcher
   );
-  const { data: coinMarket1WeekResponse } = useSWRImmutable(
-    [`/api/coins/${pid}`, queryParams[1].queryString],
-    axiosFetcher
-  );
-  const { data: coinMarket1MonthResponse } = useSWRImmutable(
-    [`/api/coins/${pid}`, queryParams[2].queryString],
-    axiosFetcher
-  );
-  const { data: coinMarket1YearResponse } = useSWRImmutable(
-    [`/api/coins/${pid}`, queryParams[3].queryString],
-    axiosFetcher
-  );
-
-  const [currentTimeData, setCurrentTimeData] = useState();
-
-  useEffect(() => {
-    switch (currentTimeRange) {
-      case '1D':
-        setCurrentTimeData(coinMarket1DayResponse);
-        break;
-      case '1W':
-        console.log(coinMarket1WeekResponse)
-        setCurrentTimeData(coinMarket1WeekResponse);
-        break;
-      case '1M':
-        setCurrentTimeData(coinMarket1MonthResponse);
-        break;
-      case '1Y':
-        setCurrentTimeData(coinMarket1YearResponse);
-        break;
-      default:
-        break;
-    }
-  }, [
-    coinMarket1DayResponse,
-    coinMarket1MonthResponse,
-    coinMarket1WeekResponse,
-    coinMarket1YearResponse,
-    currentTimeRange,
-    currentTimeData,
-  ]);
 
   const options: Options = {
     chart: {
@@ -80,7 +33,7 @@ export const LineChart = ({
       {
         type: 'area',
         name: 'Bitcoin',
-        data: currentTimeData,
+        data: coinMarketRangeResponse,
         color: 'rgba(255,0,0,0.5)',
       },
     ],
@@ -120,7 +73,9 @@ export const LineChart = ({
 
   return (
     <div>
-      <HighchartsReact highcharts={Highcharts} options={options} />
+      {coinMarketRangeResponse && (
+        <HighchartsReact highcharts={Highcharts} options={options} />
+      )}
     </div>
   );
 };
