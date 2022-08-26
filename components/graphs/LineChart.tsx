@@ -1,5 +1,5 @@
 import HighchartsReact from 'highcharts-react-official';
-import Highcharts, { Options } from 'highcharts';
+import Highcharts, { Options, GradientColorStopObject } from 'highcharts';
 import useSWR from 'swr';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
@@ -14,22 +14,14 @@ const axiosFetcher = async (url: string, queryParams = '') => {
 };
 
 export const LineChart = ({ queryParams, pid }: LineChartProps) => {
+  const [graphLineColor, setGraphLineColor] = useState('');
+  const [graphGradientColor, setGraphGradientColor] = useState<GradientColorStopObject[]>([]);
+
   const { data: coinMarketRangeResponse } = useSWR(
     [`/api/coins/${pid}`, queryParams],
     axiosFetcher
   );
 
-  const [graphLineColor, setGraphLineColor] = useState('');
-  const [graphGradientColor, setGraphGradientColor] = useState<
-    (number | string)[][]
-  >([]);
-
-  // const graphColor = (coinMarketRangeResponse) => {
-  //   if (coinMarketRangeResponse[0][1] > coinMarketRangeResponse[coinMarketRangeResponse.length - 1][1]) {
-  //     return 'rgba(0,255,0,0.5)'
-  //   }
-  //   return 'rgba(255,0,0,0.5)'
-  // };
   useEffect(() => {
     if (coinMarketRangeResponse) {
       if (
