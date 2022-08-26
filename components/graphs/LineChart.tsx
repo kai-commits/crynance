@@ -2,6 +2,7 @@ import HighchartsReact from 'highcharts-react-official';
 import Highcharts, { Options } from 'highcharts';
 import useSWR from 'swr';
 import axios from 'axios';
+import { useEffect, useState } from 'react';
 
 interface LineChartProps {
   queryParams: string;
@@ -18,6 +19,40 @@ export const LineChart = ({ queryParams, pid }: LineChartProps) => {
     axiosFetcher
   );
 
+  const [graphLineColor, setGraphLineColor] = useState('');
+  const [graphGradientColor, setGraphGradientColor] = useState<
+    (number | string)[][]
+  >([]);
+
+  // const graphColor = (coinMarketRangeResponse) => {
+  //   if (coinMarketRangeResponse[0][1] > coinMarketRangeResponse[coinMarketRangeResponse.length - 1][1]) {
+  //     return 'rgba(0,255,0,0.5)'
+  //   }
+  //   return 'rgba(255,0,0,0.5)'
+  // };
+  useEffect(() => {
+    if (coinMarketRangeResponse) {
+      if (
+        coinMarketRangeResponse[0][1] <
+        coinMarketRangeResponse[coinMarketRangeResponse.length - 1][1]
+      ) {
+        setGraphLineColor('rgba(0,255,0,0.5');
+        setGraphGradientColor([
+          [0, 'rgba(0,255,0,0.3)'],
+          [0.5, 'rgba(0,255,0,0.1)'],
+          [1, 'rgba(0,255,0,0.0)'],
+        ]);
+      } else {
+        setGraphLineColor('rgba(255,0,0,0.5');
+        setGraphGradientColor([
+          [0, 'rgba(255,0,0,0.3)'],
+          [0.5, 'rgba(255,0,0,0.1)'],
+          [1, 'rgba(255,0,0,0.0)'],
+        ]);
+      }
+    }
+  }, [coinMarketRangeResponse]);
+
   const options: Options = {
     chart: {
       backgroundColor: undefined,
@@ -32,9 +67,9 @@ export const LineChart = ({ queryParams, pid }: LineChartProps) => {
     series: [
       {
         type: 'area',
-        name: 'Bitcoin',
+        name: `${pid}`,
         data: coinMarketRangeResponse,
-        color: 'rgba(255,0,0,0.5)',
+        color: graphLineColor,
       },
     ],
     credits: {
@@ -61,11 +96,7 @@ export const LineChart = ({ queryParams, pid }: LineChartProps) => {
             x2: 0,
             y2: 1,
           },
-          stops: [
-            [0, 'rgba(255,0,0,0.3)'],
-            [0.5, 'rgba(255,0,0,0.1)'],
-            [1, 'rgba(255,0,0,0.0)'],
-          ],
+          stops: graphGradientColor,
         },
       },
     },
