@@ -2,28 +2,29 @@ import HighchartsReact from 'highcharts-react-official';
 import Highcharts, { Options, GradientColorStopObject } from 'highcharts';
 import useSWR from 'swr';
 import axios from 'axios';
-import { useEffect, useState } from 'react';
+import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 
 interface LineChartProps {
   queryParams: string;
   pid: string | string[] | undefined;
 }
 
-const axiosFetcher = async (url: string, queryParams = '') => {
-  return await axios.get(`${url}${queryParams}`).then((res) => res.data);
+const axiosFetcher = async (url: string, queryParams = '', setter: Dispatch<SetStateAction<number[][]>>) => {
+  return await axios.get(`${url}${queryParams}`).then((res) => setter(res.data));
 };
 
 export const LineChart = ({ queryParams, pid }: LineChartProps) => {
   const [graphLineColor, setGraphLineColor] = useState('');
   const [graphGradientColor, setGraphGradientColor] = useState<GradientColorStopObject[]>([]);
+  const [coinMarketRangeResponse, setCoinMarketRangeResponse] = useState<number[][]>([]);
 
-  const { data: coinMarketRangeResponse } = useSWR(
-    [`/api/coins/${pid}`, queryParams],
+  useSWR(
+    [`/api/coins/${pid}`, queryParams, setCoinMarketRangeResponse],
     axiosFetcher
   );
 
   useEffect(() => {
-    if (coinMarketRangeResponse) {
+    if (coinMarketRangeResponse.length > 0) {
       if (
         coinMarketRangeResponse[0][1] <
         coinMarketRangeResponse[coinMarketRangeResponse.length - 1][1]
