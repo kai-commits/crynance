@@ -4,23 +4,46 @@ import { LineChart } from '../components/graphs/LineChart';
 import { Nav } from '../components/Nav';
 import { useState } from 'react';
 import classNames from 'classnames';
+import dayjs from 'dayjs';
 
 interface TimeRangeButton {
   name: string;
   queryString: string;
 }
 
+const { today, oneDayAgo, oneWeekAgo, oneMonthAgo, oneYearAgo } = {
+  today: dayjs().unix(),
+  oneDayAgo: dayjs().subtract(1, 'day').unix(),
+  oneWeekAgo: dayjs().subtract(1, 'week').unix(),
+  oneMonthAgo: dayjs().subtract(1, 'month').unix(),
+  oneYearAgo: dayjs().subtract(1, 'year').unix(),
+};
+
 const timeRangeButtons: TimeRangeButton[] = [
-  { name: '1D', queryString: `?from=1661231726&to=1661318126` },
-  { name: '1W', queryString: `?from=1660713326&to=1661318126` },
-  { name: '1M', queryString: `?from=1658639726&to=1661318126` },
-  { name: '1Y', queryString: `?from=1629782126&to=1661318126` },
+  {
+    name: '1D',
+    queryString: `?from=${oneDayAgo}&to=${today}`,
+  },
+  {
+    name: '1W',
+    queryString: `?from=${oneWeekAgo}&to=${today}`,
+  },
+  {
+    name: '1M',
+    queryString: `?from=${oneMonthAgo}&to=${today}`,
+  },
+  {
+    name: '1Y',
+    queryString: `?from=${oneYearAgo}&to=${today}`,
+  },
 ];
 
 const CoinPage: NextPage = () => {
   const { pid } = useRouter().query;
   const [activeTimeButton, setActiveTimeButton] = useState('1D');
-  const [queryParams, setQueryParams] = useState(timeRangeButtons[0].queryString);
+  const [queryParams, setQueryParams] = useState(
+    timeRangeButtons[0].queryString
+  );
 
   const timeRangeButtonClasses = (button: TimeRangeButton): string => {
     return classNames('text-bold border-2 px-2 rounded', {
