@@ -17,7 +17,7 @@ const axiosFetcher = async (url: string) => {
 
 export const Main = (): JSX.Element => {
   const { data: marketsResponse } = useSWR('/api/markets', axiosFetcher);
-  console.log(marketsResponse);
+
   return (
     <div className='flex items-center flex-col bg-lightblue px-5 h-max pb-3 min-h-screen'>
       {marketsResponse?.map((coin: ParsedMarkets) => (

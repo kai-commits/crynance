@@ -3,8 +3,13 @@ import Head from 'next/head';
 import { Header } from '../components/Header';
 import { Main } from '../components/Main';
 import { Nav } from '../components/Nav';
+import { auth } from '../firebase';
+import { useAuthState } from 'react-firebase-hooks/auth';
 
 const Home: NextPage = () => {
+  const [user] = useAuthState(auth);
+  console.log(user);
+  
   return (
     <div>
       <Head>
