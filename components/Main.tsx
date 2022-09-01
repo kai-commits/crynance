@@ -1,6 +1,7 @@
-import axios from 'axios';
 import useSWR from 'swr';
+import { axiosFetcher } from '../helpers/axiosFetcher';
 import { Coin } from './Coin';
+
 
 interface ParsedMarkets {
   id: string;
@@ -10,10 +11,6 @@ interface ParsedMarkets {
   currentMarketValue: number;
   priceChangePercentage: number;
 }
-
-const axiosFetcher = async (url: string) => {
-  return await axios.get(url).then((res) => res.data);
-};
 
 export const Main = (): JSX.Element => {
   const { data: marketsResponse } = useSWR('/api/markets', axiosFetcher);
