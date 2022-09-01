@@ -9,17 +9,27 @@ interface LineChartProps {
   pid: string | string[] | undefined;
 }
 
-const axiosFetcher = async (url: string, queryParams = '', setter: Dispatch<SetStateAction<number[][]>>) => {
-  return await axios.get(`${url}${queryParams}`).then((res) => setter(res.data));
+const axiosFetcher = async (
+  url: string,
+  queryParams = '',
+  setter: Dispatch<SetStateAction<number[][]>>
+) => {
+  return await axios
+    .get(`${url}${queryParams}`)
+    .then((res) => setter(res.data));
 };
 
 export const LineChart = ({ queryParams, pid }: LineChartProps) => {
   const [graphLineColor, setGraphLineColor] = useState('');
-  const [graphGradientColor, setGraphGradientColor] = useState<GradientColorStopObject[]>([]);
-  const [coinMarketRangeResponse, setCoinMarketRangeResponse] = useState<number[][]>([]);
+  const [graphGradientColor, setGraphGradientColor] = useState<
+    GradientColorStopObject[]
+  >([]);
+  const [coinMarketRangeResponse, setCoinMarketRangeResponse] = useState<
+    number[][]
+  >([]);
 
   useSWR(
-    [`/api/coins/${pid}`, queryParams, setCoinMarketRangeResponse],
+    [`/api/coins/market_chart/${pid}`, queryParams, setCoinMarketRangeResponse],
     axiosFetcher
   );
 
