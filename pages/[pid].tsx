@@ -5,6 +5,8 @@ import { Nav } from '../components/Nav';
 import { useState } from 'react';
 import classNames from 'classnames';
 import dayjs from 'dayjs';
+import useSWR from 'swr';
+import { axiosFetcher } from '../helpers/axiosFetcher';
 
 interface TimeRangeButton {
   name: string;
@@ -40,6 +42,8 @@ const timeRangeButtons: TimeRangeButton[] = [
 
 const CoinPage: NextPage = () => {
   const { pid } = useRouter().query;
+  const { data: coinDataResponse } = useSWR(`/api/coins/${pid}`, axiosFetcher);
+
   const [activeTimeButton, setActiveTimeButton] = useState('1D');
   const [queryParams, setQueryParams] = useState(
     timeRangeButtons[0].queryString
