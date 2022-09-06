@@ -34,7 +34,7 @@ interface CoinGeckoCoins {
   total_volume: number;
 }
 
-interface ParsedCoin {
+export interface ParsedCoin {
   id: string;
   symbol: string;
   name: string;
@@ -70,7 +70,7 @@ export default async function handler(
     };
   });
 
-  response.status(200).send(parsedData);
+  response.status(200).send(parsedData[0]);
 }
 
 // ath: 69045
