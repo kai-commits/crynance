@@ -61,8 +61,8 @@ export const LineChart = ({ queryParams, pid }: LineChartProps) => {
       backgroundColor: undefined,
       // zoomType: 'x',
       type: 'area',
-      spacingLeft: -8,
-      spacingRight: -8,
+      spacingLeft: -4,
+      spacingRight: -4,
     },
     title: {
       text: '',
