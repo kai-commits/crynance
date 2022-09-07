@@ -59,7 +59,7 @@ export default async function handler(
   const parsedData: ParsedCoin[] = coinData.map((coin: CoinGeckoCoins) => {
     return {
       id: coin.id,
-      symbol: coin.id,
+      symbol: coin.symbol,
       name: coin.name,
       logo: coin.image,
       currentMarketValue: coin.current_price,
