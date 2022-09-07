@@ -9,6 +9,7 @@ import useSWR from 'swr';
 import { axiosFetcher } from '../helpers/axiosFetcher';
 import { ParsedCoin } from './api/coins/[pid]';
 import Link from 'next/link';
+import { Transaction } from '../components/Transaction';
 
 interface TimeRangeButton {
   name: string;
@@ -77,9 +78,9 @@ const CoinPage: NextPage = () => {
   };
 
   return (
-    <div className='flex flex-col justify-between h-screen'>
-      <div className='flex bg-darkblue'>
-        <div className='flex flex-col mx-auto w-full max-w-3xl'>
+    <div className='flex flex-col justify-between bg-darkblue h-screen'>
+      <div className='flex flex-col items-center px-5'>
+        <div className='w-full max-w-3xl'>
           <div className='flex flex-col'>
             <div className='flex justify-center text-lightpink text-3xl font-bold cursor-pointer p-4'>
               {coinDataResponse?.name}
@@ -98,7 +99,7 @@ const CoinPage: NextPage = () => {
             </div>
           </div>
           {pid && <LineChart queryParams={queryParams} pid={pid} />}
-          <div className='flex justify-between px-5'>
+          <div className='flex justify-between'>
             {timeRangeButtons.map((button, index) => (
               <button
                 key={index}
@@ -109,7 +110,7 @@ const CoinPage: NextPage = () => {
               </button>
             ))}
           </div>
-          <div className='flex flex-col px-5'>
+          <div className='flex flex-col'>
             <div className='flex justify-center text-lightpink text-xl my-5'>
               0.146 {coinDataResponse?.symbol.toUpperCase()}
             </div>
@@ -122,7 +123,7 @@ const CoinPage: NextPage = () => {
               <div>$400</div>
             </div>
           </div>
-          <div className='flex justify-between w-full px-5 my-8'>
+          <div className='flex justify-between w-full my-8'>
             <Link href='/bought'>
               <button className='bg-lightpink px-4 py-2 rounded font-bold text-darkblue cursor-pointer flex-1 mr-5'>
                 Buy
@@ -136,7 +137,15 @@ const CoinPage: NextPage = () => {
           </div>
         </div>
       </div>
-      <div className='flex grow bg-lightblue'></div>
+      <div className='flex flex-col grow bg-lightblue'>
+        <div className='flex flex-col items-center px-5 pb-3'>
+          <Transaction />
+          <Transaction />
+          <Transaction />
+          <Transaction />
+          <Transaction />
+        </div>
+      </div>
       <Nav />
     </div>
   );
