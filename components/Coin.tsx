@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
+import { roundNumber } from '../helpers/math';
 
 interface Coin {
   id: string;
@@ -30,15 +31,15 @@ export const Coin = ({
               <div className='text-lg text-blackeye-blue'>{name}</div>
               <div className='flex'>
                 <div className='text-sm text-darkblue'>
-                  ${Math.round(currentMarketValue * 100000) / 100000}
+                  ${roundNumber(currentMarketValue, 5)}
                 </div>
                 {priceChangePercentage > 0 ? (
                   <div className='text-sm text-green-500 px-2'>
-                    {Math.round(priceChangePercentage * 100) / 100}%
+                    {roundNumber(priceChangePercentage, 2)}%
                   </div>
                 ) : (
                   <div className='text-sm text-red-500 px-2'>
-                    {Math.round(priceChangePercentage * 100) / 100}%
+                    {roundNumber(priceChangePercentage, 2)}%
                   </div>
                 )}
               </div>
