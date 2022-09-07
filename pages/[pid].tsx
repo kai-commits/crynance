@@ -2,14 +2,15 @@ import { NextPage } from 'next';
 import { useRouter } from 'next/router';
 import { LineChart } from '../components/graphs/LineChart';
 import { Nav } from '../components/Nav';
-import { useEffect, useState } from 'react';
+import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import classNames from 'classnames';
 import dayjs from 'dayjs';
 import useSWR from 'swr';
-import { axiosFetcher } from '../helpers/axiosFetcher';
 import { ParsedCoin } from './api/coins/[pid]';
 import Link from 'next/link';
 import { Transaction } from '../components/Transaction';
+import axios from 'axios';
+import { roundNumber } from '../helpers/math';
 
 interface TimeRangeButton {
   name: string;
@@ -25,44 +26,68 @@ const { today, oneDayAgo, oneWeekAgo, oneMonthAgo, oneYearAgo } = {
   oneYearAgo: dayjs().subtract(1, 'year').unix(),
 };
 
+const axiosFetcher = async (
+  url: string,
+  setter: Dispatch<SetStateAction<ParsedCoin>>
+) => {
+  return await axios.get(`${url}`).then((res) => setter(res.data));
+};
+
 const CoinPage: NextPage = () => {
   const { pid } = useRouter().query;
-  const { data } = useSWR(`/api/coins/${pid}`, axiosFetcher);
-  const coinDataResponse: ParsedCoin = data;
-  const timeRangeButtons: TimeRangeButton[] = [
-    {
-      name: '1D',
-      queryString: `?from=${oneDayAgo}&to=${today}`,
-      percentageChange:
-        Math.round(coinDataResponse?.priceChangePercentage1D * 100) / 100,
-    },
-    {
-      name: '1W',
-      queryString: `?from=${oneWeekAgo}&to=${today}`,
-      percentageChange:
-        Math.round(coinDataResponse?.priceChangePercentage1W * 100) / 100,
-    },
-    {
-      name: '1M',
-      queryString: `?from=${oneMonthAgo}&to=${today}`,
-      percentageChange:
-        Math.round(coinDataResponse?.priceChangePercentage1M * 100) / 100,
-    },
-    {
-      name: '1Y',
-      queryString: `?from=${oneYearAgo}&to=${today}`,
-      percentageChange:
-        Math.round(coinDataResponse?.priceChangePercentage1Y * 100) / 100,
-    },
-  ];
+  const [coinDataResponse, setCoinDataResponse] = useState<ParsedCoin>();
+  const [activeTimeButton, setActiveTimeButton] = useState<string>('1D');
+  const [percentageChange, setPercentageChange] = useState<number>(0);
+  const [queryParams, setQueryParams] = useState<string>(
+    `?from=${oneDayAgo}&to=${today}`
+  );
+  const [timeRangeButtons, setTimeRangeButtons] = useState<TimeRangeButton[]>(
+    []
+  );
 
-  const [activeTimeButton, setActiveTimeButton] = useState('1D');
-  const [percentageChange, setPercentageChange] = useState(
-    timeRangeButtons[0].percentageChange
-  );
-  const [queryParams, setQueryParams] = useState(
-    timeRangeButtons[0].queryString
-  );
+  useSWR([`/api/coins/${pid}`, setCoinDataResponse], axiosFetcher);
+
+  useEffect(() => {
+    if (coinDataResponse) {
+      setPercentageChange(
+        roundNumber(coinDataResponse.priceChangePercentage1D, 2)
+      );
+      setTimeRangeButtons([
+        {
+          name: '1D',
+          queryString: `?from=${oneDayAgo}&to=${today}`,
+          percentageChange: roundNumber(
+            coinDataResponse.priceChangePercentage1D,
+            2
+          ),
+        },
+        {
+          name: '1W',
+          queryString: `?from=${oneWeekAgo}&to=${today}`,
+          percentageChange: roundNumber(
+            coinDataResponse.priceChangePercentage1W,
+            2
+          ),
+        },
+        {
+          name: '1M',
+          queryString: `?from=${oneMonthAgo}&to=${today}`,
+          percentageChange: roundNumber(
+            coinDataResponse.priceChangePercentage1M,
+            2
+          ),
+        },
+        {
+          name: '1Y',
+          queryString: `?from=${oneYearAgo}&to=${today}`,
+          percentageChange: roundNumber(
+            coinDataResponse.priceChangePercentage1Y,
+            2
+          ),
+        },
+      ]);
+    }
+  }, [coinDataResponse]);
 
   const timeRangeButtonClasses = (button: TimeRangeButton): string => {
     return classNames('text-bold border-2 px-2 rounded', {
@@ -77,18 +102,19 @@ const CoinPage: NextPage = () => {
     setPercentageChange(button.percentageChange);
   };
 
+  if (!coinDataResponse) {
+    return <div className='bg-darkblue w-full h-screen'></div>;
+  }
   return (
     <div className='flex flex-col justify-between bg-darkblue h-screen'>
       <div className='flex flex-col items-center px-5'>
         <div className='w-full max-w-3xl'>
           <div className='flex justify-center text-lightpink text-3xl font-bold cursor-pointer p-4'>
-            {coinDataResponse?.name}
+            {coinDataResponse.name}
           </div>
           <div className='flex justify-evenly text-xl'>
             <div className='text-offwhite pr-3'>
-              $
-              {Math.round(coinDataResponse?.currentMarketValue * 100000) /
-                100000}
+              ${roundNumber(coinDataResponse.currentMarketValue, 5)}
             </div>
             {percentageChange >= 0 ? (
               <div className='text-green-500 pl-3'>{percentageChange}%</div>
@@ -116,7 +142,7 @@ const CoinPage: NextPage = () => {
           </div>
           <div className='flex flex-col'>
             <div className='flex justify-center text-lightpink text-xl my-5'>
-              0.146 {coinDataResponse?.symbol.toUpperCase()}
+              0.146 {coinDataResponse.symbol.toUpperCase()}
             </div>
             <div className='flex justify-between text-offwhite'>
               <div>Current Balance</div>
