@@ -2,11 +2,13 @@ import { NextPage } from 'next';
 import { useRouter } from 'next/router';
 import { LineChart } from '../components/graphs/LineChart';
 import { Nav } from '../components/Nav';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import classNames from 'classnames';
 import dayjs from 'dayjs';
 import useSWR from 'swr';
 import { axiosFetcher } from '../helpers/axiosFetcher';
+import { ParsedCoin } from './api/coins/[pid]';
+import Link from 'next/link';
 
 interface TimeRangeButton {
   name: string;
@@ -24,7 +26,8 @@ const { today, oneDayAgo, oneWeekAgo, oneMonthAgo, oneYearAgo } = {
 
 const CoinPage: NextPage = () => {
   const { pid } = useRouter().query;
-  const { data: coinDataResponse } = useSWR(`/api/coins/${pid}`, axiosFetcher);
+  const { data } = useSWR(`/api/coins/${pid}`, axiosFetcher);
+  const coinDataResponse: ParsedCoin = data;
   const timeRangeButtons: TimeRangeButton[] = [
     {
       name: '1D',
@@ -53,7 +56,9 @@ const CoinPage: NextPage = () => {
   ];
 
   const [activeTimeButton, setActiveTimeButton] = useState('1D');
-  const [percentageChange, setPercentageChange] = useState(0);
+  const [percentageChange, setPercentageChange] = useState(
+    timeRangeButtons[0].percentageChange
+  );
   const [queryParams, setQueryParams] = useState(
     timeRangeButtons[0].queryString
   );
@@ -73,28 +78,27 @@ const CoinPage: NextPage = () => {
 
   return (
     <div className='flex flex-col justify-between h-screen'>
-      <div className='flex grow bg-darkblue'>
+      <div className='flex bg-darkblue'>
         <div className='flex flex-col mx-auto w-full max-w-3xl'>
-          <div className='flex flex-col items-center'>
-            <div className='text-lightpink text-3xl font-bold cursor-pointer p-4'>
+          <div className='flex flex-col'>
+            <div className='flex justify-center text-lightpink text-3xl font-bold cursor-pointer p-4'>
               {coinDataResponse?.name}
             </div>
-            <div className='flex justify-center'>
-              <div className='text-offwhite pr-1'>
+            <div className='flex justify-evenly text-xl'>
+              <div className='text-offwhite pr-3'>
                 $
                 {Math.round(coinDataResponse?.currentMarketValue * 100000) /
                   100000}
               </div>
               {percentageChange >= 0 ? (
-                <div className='text-green-500 pl-1'>{percentageChange}%</div>
+                <div className='text-green-500 pl-3'>{percentageChange}%</div>
               ) : (
-                <div className='text-red-500 pl-1'>{percentageChange}%</div>
+                <div className='text-red-500 pl-3'>{percentageChange}%</div>
               )}
             </div>
           </div>
           {pid && <LineChart queryParams={queryParams} pid={pid} />}
-
-          <div className='flex justify-between'>
+          <div className='flex justify-between px-5'>
             {timeRangeButtons.map((button, index) => (
               <button
                 key={index}
@@ -105,8 +109,34 @@ const CoinPage: NextPage = () => {
               </button>
             ))}
           </div>
+          <div className='flex flex-col px-5'>
+            <div className='flex justify-center text-lightpink text-xl my-5'>
+              0.146 {coinDataResponse?.symbol.toUpperCase()}
+            </div>
+            <div className='flex justify-between text-offwhite'>
+              <div>Current Balance</div>
+              <div>$500</div>
+            </div>
+            <div className='flex justify-between text-lightblue'>
+              <div>Starting Balance</div>
+              <div>$400</div>
+            </div>
+          </div>
+          <div className='flex justify-between w-full px-5 my-8'>
+            <Link href='/bought'>
+              <button className='bg-lightpink px-4 py-2 rounded font-bold text-darkblue cursor-pointer flex-1 mr-5'>
+                Buy
+              </button>
+            </Link>
+            <Link href='/sold'>
+              <button className='bg-lightpink px-4 py-2 rounded font-bold text-darkblue cursor-pointer flex-1 ml-5'>
+                Sell
+              </button>
+            </Link>
+          </div>
         </div>
       </div>
+      <div className='flex grow bg-lightblue'></div>
       <Nav />
     </div>
   );
