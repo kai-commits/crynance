@@ -81,24 +81,28 @@ const CoinPage: NextPage = () => {
     <div className='flex flex-col justify-between bg-darkblue h-screen'>
       <div className='flex flex-col items-center px-5'>
         <div className='w-full max-w-3xl'>
-          <div className='flex flex-col'>
-            <div className='flex justify-center text-lightpink text-3xl font-bold cursor-pointer p-4'>
-              {coinDataResponse?.name}
-            </div>
-            <div className='flex justify-evenly text-xl'>
-              <div className='text-offwhite pr-3'>
-                $
-                {Math.round(coinDataResponse?.currentMarketValue * 100000) /
-                  100000}
-              </div>
-              {percentageChange >= 0 ? (
-                <div className='text-green-500 pl-3'>{percentageChange}%</div>
-              ) : (
-                <div className='text-red-500 pl-3'>{percentageChange}%</div>
-              )}
-            </div>
+          <div className='flex justify-center text-lightpink text-3xl font-bold cursor-pointer p-4'>
+            {coinDataResponse?.name}
           </div>
-          {pid && <LineChart queryParams={queryParams} pid={pid} />}
+          <div className='flex justify-evenly text-xl'>
+            <div className='text-offwhite pr-3'>
+              $
+              {Math.round(coinDataResponse?.currentMarketValue * 100000) /
+                100000}
+            </div>
+            {percentageChange >= 0 ? (
+              <div className='text-green-500 pl-3'>{percentageChange}%</div>
+            ) : (
+              <div className='text-red-500 pl-3'>{percentageChange}%</div>
+            )}
+          </div>
+        </div>
+      </div>
+      <div className='w-full mx-auto max-w-3xl'>
+        {pid && <LineChart queryParams={queryParams} pid={pid} />}
+      </div>
+      <div className='flex flex-col items-center px-5'>
+        <div className='w-full max-w-3xl'>
           <div className='flex justify-between'>
             {timeRangeButtons.map((button, index) => (
               <button
@@ -137,6 +141,7 @@ const CoinPage: NextPage = () => {
           </div>
         </div>
       </div>
+
       <div className='flex flex-col grow bg-lightblue'>
         <div className='flex flex-col items-center px-5 pb-3'>
           <Transaction />
