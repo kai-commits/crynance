@@ -9,20 +9,22 @@ import { useAuthState } from 'react-firebase-hooks/auth';
 const Home: NextPage = () => {
   const [user] = useAuthState(auth);
   console.log(user);
-  
+
   return (
-    <div>
+    <>
       <Head>
         <title>Crynance</title>
         <meta name='crypto finance tracker' content='' />
         <link rel='icon' href='/favicon.ico' />
       </Head>
-      <div className='flex flex-col justify-between h-max mx-auto min-w-fit'>
-        <Header title='Crynance' search={true} />
-        <Main />
-        <Nav />
+      <div className='w-full h-full bg-blackeye-blue'>
+        <div className='flex flex-col justify-between h-max mx-auto min-w-fit max-w-3xl'>
+          <Header title='Crynance' search={true} />
+          <Main />
+          <Nav />
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 
