@@ -39,6 +39,7 @@ const CoinPage: NextPage = () => {
   const [coinDataResponse, setCoinDataResponse] = useState<ParsedCoin>();
   const [activeTimeButton, setActiveTimeButton] = useState<string>('1D');
   const [percentageChange, setPercentageChange] = useState<number>(0);
+  const [modalActive, setModalActive] = useState<boolean>(false);
   const [queryParams, setQueryParams] = useState<string>(
     `?from=${oneDayAgo}&to=${today}`
   );
@@ -157,16 +158,16 @@ const CoinPage: NextPage = () => {
                 </div>
               </div>
               <div className='flex justify-between w-full my-8'>
-                <Link href='/bought'>
-                  <button className='bg-lightpink px-4 py-2 rounded font-bold text-darkblue cursor-pointer flex-1 mr-5'>
-                    Buy
-                  </button>
-                </Link>
-                <Link href='/sold'>
-                  <button className='bg-lightpink px-4 py-2 rounded font-bold text-darkblue cursor-pointer flex-1 ml-5'>
-                    Sell
-                  </button>
-                </Link>
+                <button
+                  onClick={() => setModalActive(!modalActive)}
+                  className='bg-lightpink px-4 py-2 rounded font-bold text-darkblue cursor-pointer flex-1 mr-5'
+                >
+                  Buy
+                </button>
+
+                <button className='bg-lightpink px-4 py-2 rounded font-bold text-darkblue cursor-pointer flex-1 ml-5'>
+                  Sell
+                </button>
               </div>
             </div>
           </div>
@@ -181,7 +182,7 @@ const CoinPage: NextPage = () => {
             </div>
           </div>
           <Nav />
-          {/* <CoinModal /> */}
+          {modalActive && <CoinModal setModalActive={setModalActive} name={coinDataResponse.name} symbol={coinDataResponse.symbol} currentMarketValue={coinDataResponse.currentMarketValue}/>}
         </div>
       </div>
     </>
