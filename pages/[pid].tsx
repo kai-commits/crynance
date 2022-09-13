@@ -11,7 +11,7 @@ import Link from 'next/link';
 import { Transaction } from '../components/Transaction';
 import axios from 'axios';
 import { roundNumber } from '../helpers/math';
-import { CoinModal } from '../components/graphs/CoinModal';
+import { CoinModal } from '../components/CoinModal';
 
 interface TimeRangeButton {
   name: string;
