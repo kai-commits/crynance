@@ -1,4 +1,5 @@
 import { ChangeEvent, Dispatch, SetStateAction, useState } from 'react';
+import { X } from 'react-feather';
 import { roundNumber } from '../helpers/math';
 import { AutoWidthInput } from './AutoWidthInput';
 
@@ -15,47 +16,47 @@ export const CoinModal = ({
   symbol,
   currentMarketValue,
 }: ModalProps) => {
-  const [purchaseAmount, setPurchaseAmount] = useState<string>('0');
-  const [equivalentValue, setEquivalentValue] = useState<number>(0);
-  const [usdInput, setUsdInput] = useState<boolean>(false);
+  const [usdValue, setUsdValue] = useState<string>('0');
+  const [coinValue, setCoinValue] = useState<number>(0);
 
   const inputHandler = (event: ChangeEvent<HTMLInputElement>) => {
     if (event.target.value.length <= 0) {
-      setEquivalentValue(0);
+      setCoinValue(0);
     } else {
-      setEquivalentValue(event.target.valueAsNumber * currentMarketValue);
+      setCoinValue(event.target.valueAsNumber * currentMarketValue);
     }
-    setPurchaseAmount(event.target.value);
+    setUsdValue(event.target.value);
   };
 
   return (
-    <div className='fixed z-[500] h-2/4 bottom-0 right-0 left-0 bg-offwhite rounded-t-lg max-w-3xl mx-auto'>
-      <div className='flex flex-col items-center'>
+    <div className='fixed z-[500] bottom-0 right-0 left-0 bg-offwhite rounded-t-lg max-w-3xl mx-auto pb-5'>
+      <div className='flex flex-col items-center px-5'>
         <button
           onClick={() => setModalActive(false)}
-          className='absolute top-0 right-0 pr-2 pt-1'
+          className='absolute top-0 right-0 p-2 text-darkblue'
         >
-          X
+          <X />
         </button>
-        <div className='text-xl text-darkblue font-semibold p-3'>
+        <div className='text-2xl text-darkblue font-semibold p-3'>
           Buy {name}
         </div>
-        <div className=''>
-          <form className='flex'>
-            <AutoWidthInput
-              type='number'
-              min='0'
-              value={purchaseAmount}
-              inputHandler={inputHandler}
-              className='focus-visible:outline-none text-center text-3xl text-lightpink'
-            />
-            <label className=''>{symbol.toUpperCase()}</label>
-          </form>
+        <form className='flex text-green-500'>
+          <AutoWidthInput
+            type='number'
+            min='0'
+            inputHandler={inputHandler}
+            textSize='text-4xl'
+            className='focus-visible:outline-none text-center text-4xl bg-offwhite underline'
+          />
+          <label className='flex items-center text-xl pl-3'>
+            {symbol.toUpperCase()}
+          </label>
+        </form>
+        <div className='flex text-xl text-darkblue p-4'>
+          ${roundNumber(coinValue, 2)}
+          <label className='flex text-sm pl-1 items-center'>USD</label>
         </div>
-        <div className='text-xl text-darkblue p-3'>
-          ${roundNumber(equivalentValue, 2)}
-        </div>
-        <button>Swap</button>
+        <button className='bg-lightpink px-4 py-2 rounded font-bold text-darkblue cursor-pointer w-full'>Purchase</button>
       </div>
     </div>
   );

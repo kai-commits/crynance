@@ -1,15 +1,9 @@
-import React, {
-  ChangeEvent,
-  ChangeEventHandler,
-  useEffect,
-  useRef,
-  useState,
-} from 'react';
+import { ChangeEvent, useEffect, useRef, useState } from 'react';
 
 interface AutoWidthInputProps {
   type: string;
   min: string;
-  value: string;
+  textSize: string;
   inputHandler: (event: ChangeEvent<HTMLInputElement>) => void;
   className: string;
 }
@@ -17,12 +11,12 @@ interface AutoWidthInputProps {
 export const AutoWidthInput = ({
   type,
   min,
-  value,
+  textSize,
   inputHandler,
   className,
 }: AutoWidthInputProps) => {
-  const [content, setContent] = useState('0');
-  const [width, setWidth] = useState(0);
+  const [content, setContent] = useState<string>('0');
+  const [width, setWidth] = useState<number>(0);
   const span = useRef();
 
   useEffect(() => {
@@ -35,13 +29,16 @@ export const AutoWidthInput = ({
   };
   return (
     <>
-      <span ref={span} className='absolute opacity-0 -z-50 whitespace-pre p-5 text-3xl'>
+      <span
+        ref={span}
+        className={'absolute opacity-0 -z-50 whitespace-pre ' + textSize}
+      >
         {content}
       </span>
       <input
         type={type}
         min={min}
-        value={value}
+        value={content}
         onChange={(event) => changeHandler(event)}
         className={className}
         style={{ width }}
