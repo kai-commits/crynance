@@ -2,7 +2,16 @@ import { NextPage } from 'next';
 import { useRouter } from 'next/router';
 import { LineChart } from '../components/graphs/LineChart';
 import { Nav } from '../components/Nav';
-import { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import {
+  Dispatch,
+  JSXElementConstructor,
+  ReactElement,
+  ReactFragment,
+  ReactPortal,
+  SetStateAction,
+  useEffect,
+  useState,
+} from 'react';
 import classNames from 'classnames';
 import dayjs from 'dayjs';
 import useSWR from 'swr';
@@ -12,6 +21,7 @@ import { Transaction } from '../components/Transaction';
 import axios from 'axios';
 import { roundNumber } from '../helpers/math';
 import { CoinModal } from '../components/CoinModal';
+import { ConditionWrapper } from '../helpers/conditionalWrapper';
 
 interface TimeRangeButton {
   name: string;
@@ -40,6 +50,7 @@ const CoinPage: NextPage = () => {
   const [activeTimeButton, setActiveTimeButton] = useState<string>('1D');
   const [percentageChange, setPercentageChange] = useState<number>(0);
   const [modalActive, setModalActive] = useState<boolean>(false);
+  const [modalOpen, setModalOpen] = useState<boolean>(false);
   const [queryParams, setQueryParams] = useState<string>(
     `?from=${oneDayAgo}&to=${today}`
   );
@@ -48,6 +59,14 @@ const CoinPage: NextPage = () => {
   );
 
   useSWR([`/api/coins/${pid}`, setCoinDataResponse], axiosFetcher);
+
+  useEffect(() => {
+    if (!modalOpen) {
+      setTimeout(() => {
+        setModalActive(false);
+      }, 500);
+    }
+  }, [modalOpen]);
 
   useEffect(() => {
     if (coinDataResponse) {
@@ -111,6 +130,14 @@ const CoinPage: NextPage = () => {
     <>
       <div className='w-full h-full bg-blackeye-blue'>
         <div className='flex flex-col justify-between bg-darkblue h-max max-w-3xl mx-auto'>
+          <ConditionWrapper
+            condition={modalOpen}
+            wrapper={(children) => (
+              <div className='bg-black opacity-60 w-full h-full z-50'>
+                {children}
+              </div>
+            )}
+          >
             <div className='flex flex-col items-center px-5'>
               <div className='w-full max-w-3xl'>
                 <div className='flex justify-center text-lightpink text-3xl font-bold cursor-pointer p-4'>
@@ -161,7 +188,10 @@ const CoinPage: NextPage = () => {
                 </div>
                 <div className='flex justify-between w-full my-8'>
                   <button
-                    onClick={() => setModalActive(!modalActive)}
+                    onClick={() => {
+                      setModalActive(true);
+                      setModalOpen(!modalOpen);
+                    }}
                     className='bg-lightpink px-4 py-2 rounded font-bold text-darkblue cursor-pointer flex-1 mr-5'
                   >
                     Buy
@@ -183,14 +213,16 @@ const CoinPage: NextPage = () => {
               </div>
             </div>
             <Nav />
-          {modalActive && (
-            <CoinModal
-              setModalActive={setModalActive}
-              name={coinDataResponse.name}
-              symbol={coinDataResponse.symbol}
-              currentMarketValue={coinDataResponse.currentMarketValue}
-            />
-          )}
+          </ConditionWrapper>
+
+          <CoinModal
+            setModalOpen={setModalOpen}
+            modalActive={modalActive}
+            modalOpen={modalOpen}
+            name={coinDataResponse.name}
+            symbol={coinDataResponse.symbol}
+            currentMarketValue={coinDataResponse.currentMarketValue}
+          />
         </div>
       </div>
     </>
