@@ -1,6 +1,22 @@
+import { useEffect, useState } from 'react';
 import { Search as SearchIcon } from 'react-feather';
+import useSWR from 'swr';
+import { axiosFetcher } from '../helpers/axiosFetcher';
+import { ParsedMarkets } from '../pages';
 
-export const Search = () => {
+interface SearchProps {
+  filterMarket: (marketData: ParsedMarkets[], query: string) => void;
+}
+
+export const Search = ({ filterMarket }: SearchProps) => {
+  const { data: marketsResponse } = useSWR('/api/markets', axiosFetcher);
+  const [value, setValue] = useState<string>('');
+
+  useEffect(() => {
+    filterMarket(marketsResponse, value);
+    console.log('reload');
+  }, [value, marketsResponse, filterMarket]);
+
   return (
     <div className='bg-blackeye-blue px-5'>
       <form>
@@ -10,18 +26,13 @@ export const Search = () => {
               <SearchIcon className='text-lightblue' />
               <input
                 type='search'
-                id='default-search'
                 className=' w-full text-sm pl-2 text-offwhite bg-blackeye-blue focus-visible:outline-none placeholder:text-lightblue placeholder:italic mx-auto'
                 placeholder='Search coins...'
-                required
+                autoComplete='off'
+                value={value}
+                onChange={(event) => setValue(event.target.value)}
               />
             </div>
-          <button
-            type='submit'
-            className='text-offwhite right-2.5 bottom-2.5 bg-blackeye-blue border-lightpink border-2 font-medium rounded text-sm px-3 py-1'
-          >
-            Search
-          </button>
           </div>
         </div>
       </form>

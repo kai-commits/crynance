@@ -1,23 +1,14 @@
-import useSWR from 'swr';
-import { axiosFetcher } from '../helpers/axiosFetcher';
+import { ParsedMarkets } from '../pages';
 import { Coin } from './Coin';
 
-
-interface ParsedMarkets {
-  id: string;
-  symbol: string;
-  name: string;
-  logo: string;
-  currentMarketValue: number;
-  priceChangePercentage: number;
+interface MainProps {
+  filteredMarket: ParsedMarkets[];
 }
 
-export const Main = (): JSX.Element => {
-  const { data: marketsResponse } = useSWR('/api/markets', axiosFetcher);
-
+export const Main = ({ filteredMarket }: MainProps): JSX.Element => {
   return (
     <div className='flex items-center flex-col bg-lightblue px-5 h-max pb-3 min-h-screen'>
-      {marketsResponse?.map((coin: ParsedMarkets) => (
+      {filteredMarket?.map((coin: ParsedMarkets) => (
         <Coin
           key={coin.id}
           id={coin.id}
