@@ -17,10 +17,12 @@ export const AutoWidthInput = ({
 }: AutoWidthInputProps) => {
   const [content, setContent] = useState<string>('0');
   const [width, setWidth] = useState<number>(0);
-  const span = useRef();
+  const span = useRef<HTMLSpanElement>(null);
 
   useEffect(() => {
-    setWidth(span.current.offsetWidth);
+    if (span.current) {
+      setWidth(span.current.offsetWidth);
+    }
   }, [content]);
 
   const changeHandler = (event: ChangeEvent<HTMLInputElement>) => {
@@ -31,7 +33,7 @@ export const AutoWidthInput = ({
     <>
       <span
         ref={span}
-        className={'absolute opacity-0 -z-50 whitespace-pre ' + textSize}
+        className={'absolute opacity-0 -z-50 whitespace-pre px-1 ' + textSize}
       >
         {content}
       </span>
