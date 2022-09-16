@@ -41,6 +41,7 @@ const CoinPage: NextPage = (): JSX.Element => {
   const [percentageChange, setPercentageChange] = useState<number>(0);
   const [modalActive, setModalActive] = useState<boolean>(false);
   const [modalOpen, setModalOpen] = useState<boolean>(false);
+  const [modalBuySell, setModalBuySell] = useState<string>('');
   const [queryParams, setQueryParams] = useState<string>(
     `?from=${oneDayAgo}&to=${today}`
   );
@@ -183,13 +184,21 @@ const CoinPage: NextPage = (): JSX.Element => {
                       onClick={() => {
                         setModalActive(true);
                         setModalOpen(!modalOpen);
+                        setModalBuySell('buy');
                       }}
                       className='bg-lightpink px-4 py-2 rounded font-bold text-darkblue cursor-pointer flex-1 mr-5'
                     >
                       Buy
                     </button>
 
-                    <button className='bg-lightpink px-4 py-2 rounded font-bold text-darkblue cursor-pointer flex-1 ml-5'>
+                    <button
+                      onClick={() => {
+                        setModalActive(true);
+                        setModalOpen(!modalOpen);
+                        setModalBuySell('sell');
+                      }}
+                      className='bg-lightpink px-4 py-2 rounded font-bold text-darkblue cursor-pointer flex-1 ml-5'
+                    >
                       Sell
                     </button>
                   </div>
@@ -211,6 +220,7 @@ const CoinPage: NextPage = (): JSX.Element => {
               setModalOpen={setModalOpen}
               modalActive={modalActive}
               modalOpen={modalOpen}
+              modalBuySell={modalBuySell}
               name={coinDataResponse.name}
               symbol={coinDataResponse.symbol}
               currentMarketValue={coinDataResponse.currentMarketValue}
