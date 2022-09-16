@@ -9,12 +9,13 @@ interface SearchProps {
 }
 
 export const Search = ({ filterMarket }: SearchProps) => {
-  const { data: marketsResponse } = useSWR('/api/markets', axiosFetcher);
+  const { data: marketsResponse } = useSWR<ParsedMarkets[]>('/api/markets', axiosFetcher);
   const [value, setValue] = useState<string>('');
 
   useEffect(() => {
-    filterMarket(marketsResponse, value);
-    console.log('reload');
+    if (marketsResponse) {
+      filterMarket(marketsResponse, value);
+    }
   }, [value, marketsResponse, filterMarket]);
 
   return (

@@ -25,7 +25,7 @@ const Home: NextPage = () => {
   const filterMarket = useCallback(
     (marketData: ParsedMarkets[], query: string) => {
       setFilteredMarket(
-        marketData?.filter((coin: ParsedMarkets) => {
+        marketData.filter((coin: ParsedMarkets) => {
           if (
             coin.id.includes(query.toLowerCase()) ||
             coin.symbol.includes(query.toLowerCase())
