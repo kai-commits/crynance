@@ -1,4 +1,5 @@
 import { GoogleAuthProvider, signInWithRedirect } from "firebase/auth";
+import { LogIn } from "react-feather";
 import { auth } from "../firebase";
 
 
@@ -8,5 +9,5 @@ const googleSignIn = () => {
 }
 
 export const SignIn = () => {
-  return <button onClick={googleSignIn}>Sign In</button>;
+  return <LogIn onClick={googleSignIn}></LogIn>;
 };

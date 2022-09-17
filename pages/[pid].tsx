@@ -12,6 +12,7 @@ import axios from 'axios';
 import { roundNumber } from '../helpers/math';
 import { CoinModal } from '../components/CoinModal';
 import { ConditionWrapper } from '../helpers/conditionalWrapper';
+import { TrendingDown, TrendingUp } from 'react-feather';
 
 interface TimeRangeButton {
   name: string;
@@ -139,12 +140,14 @@ const CoinPage: NextPage = (): JSX.Element => {
                       ${roundNumber(coinDataResponse.currentMarketValue, 5)}
                     </div>
                     {percentageChange >= 0 ? (
-                      <div className='text-green-500 pl-3'>
+                      <div className='flex text-green-500'>
                         {percentageChange}%
+                        <TrendingUp className='ml-1 pt-1' />
                       </div>
                     ) : (
-                      <div className='text-red-500 pl-3'>
+                      <div className='flex text-red-500'>
                         {percentageChange}%
+                        <TrendingDown className='ml-1 pt-1' />
                       </div>
                     )}
                   </div>

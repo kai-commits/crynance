@@ -1,5 +1,6 @@
+import { LogOut } from 'react-feather';
 import { auth } from '../firebase';
 
 export const SignOut = () => {
-  return <button onClick={() => auth.signOut()}>Sign Out</button>;
+  return <LogOut onClick={() => auth.signOut()}>Sign Out</LogOut>;
 };
