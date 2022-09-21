@@ -21,7 +21,7 @@ export const Coin = ({
 }: Coin): JSX.Element => {
   return (
     <Link href={`/${id}`}>
-      <div className='w-full bg-offwhite max-w-3xl py-2 mt-3 rounded cursor-pointer'>
+      <div className='w-full bg-offwhite max-w-4xl py-2 mt-3 rounded cursor-pointer'>
         <div className='flex justify-between items-center'>
           <div className='flex items-center mx-1'>
             <div className='flex px-2 items-center min-w-max'>

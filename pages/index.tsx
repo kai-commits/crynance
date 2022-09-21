@@ -46,7 +46,7 @@ const Home: NextPage = () => {
         <link rel='icon' href='/favicon.ico' />
       </Head>
       <div className='w-full h-full bg-blackeye-blue'>
-        <div className='flex flex-col justify-between h-max mx-auto min-w-fit max-w-3xl'>
+        <div className='flex flex-col justify-between h-max mx-auto min-w-fit max-w-4xl'>
           <Header filterMarket={filterMarket} />
           <Main filteredMarket={filteredMarket} />
           <Nav />

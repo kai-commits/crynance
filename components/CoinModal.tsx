@@ -43,7 +43,7 @@ export const CoinModal = ({
     <div
       className={classNames([
         modalOpen ? 'animate-slideUp' : 'animate-slideDown',
-        'fixed z-[500] bottom-0 right-0 left-0 bg-offwhite rounded-t-lg max-w-3xl mx-auto pb-5 transition-all duration-1000',
+        'fixed z-[500] bottom-0 right-0 left-0 bg-offwhite rounded-t-lg max-w-4xl mx-auto pb-5 transition-all duration-1000',
       ])}
     >
       <div className='flex flex-col items-center px-5'>

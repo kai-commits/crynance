@@ -9,5 +9,5 @@ const googleSignIn = () => {
 }
 
 export const SignIn = () => {
-  return <LogIn onClick={googleSignIn}></LogIn>;
+  return <LogIn onClick={googleSignIn} className='cursor-pointer' ></LogIn>;
 };

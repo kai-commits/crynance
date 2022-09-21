@@ -121,7 +121,7 @@ const CoinPage: NextPage = (): JSX.Element => {
     return (
       <>
         <div className='w-full h-full bg-blackeye-blue'>
-          <div className='flex flex-col justify-between bg-darkblue h-max max-w-3xl mx-auto'>
+          <div className='flex flex-col justify-between bg-darkblue h-max max-w-4xl mx-auto'>
             <ConditionWrapper
               condition={modalOpen}
               wrapper={(children) => (
@@ -131,7 +131,7 @@ const CoinPage: NextPage = (): JSX.Element => {
               )}
             >
               <div className='flex flex-col items-center px-5'>
-                <div className='w-full max-w-3xl'>
+                <div className='w-full max-w-4xl'>
                   <div className='flex justify-center text-lightpink text-3xl font-bold cursor-pointer p-4'>
                     {coinDataResponse.name}
                   </div>
@@ -153,11 +153,11 @@ const CoinPage: NextPage = (): JSX.Element => {
                   </div>
                 </div>
               </div>
-              <div className='w-full mx-auto max-w-3xl'>
+              <div className='w-full mx-auto max-w-4xl'>
                 {pid && <LineChart queryParams={queryParams} pid={pid} />}
               </div>
               <div className='flex flex-col items-center px-5'>
-                <div className='w-full max-w-3xl'>
+                <div className='w-full max-w-4xl'>
                   <div className='flex justify-between'>
                     {timeRangeButtons.map((button, index) => (
                       <button

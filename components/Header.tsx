@@ -10,7 +10,7 @@ export const Header = ({ filterMarket }: HeaderProps): JSX.Element => {
   return (
     <div className='bg-darkblue sticky w-full top-0 z-[100]'>
       <div className='px-5'>
-        <div className='flex items-center flex-col w-full max-w-3xl mx-auto'>
+        <div className='flex items-center flex-col w-full max-w-4xl mx-auto'>
           <div className='flex flex-col items-center'>
             <div className='text-lightpink text-3xl font-bold cursor-pointer p-4'>
               Crynance

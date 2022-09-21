@@ -9,8 +9,8 @@ export const Nav = (): JSX.Element => {
   const [user] = useAuthState(auth);
 
   return (
-    <div className='flex px-5 bg-darkblue w-full sticky bottom-0 z-[100]'>
-      <div className='flex items-center justify-between text-offwhite font-bold w-full max-w-3xl mx-auto h-12'>
+    <div className='flex px-5 bg-blackeye-blue w-full sticky bottom-0 z-[100]'>
+      <div className='flex items-center justify-between text-offwhite font-bold w-full max-w-4xl mx-auto h-12'>
         <Link href='/'>
           <Home className='cursor-pointer' />
         </Link>

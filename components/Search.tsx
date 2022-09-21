@@ -21,7 +21,7 @@ export const Search = ({ filterMarket }: SearchProps) => {
   return (
     <div className='bg-blackeye-blue px-5'>
       <form>
-        <div className='max-w-3xl mx-auto'>
+        <div className='max-w-4xl mx-auto'>
           <div className='flex justify-between items-center py-2'>
             <div className='flex grow mr-2'>
               <SearchIcon className='text-lightblue' />
