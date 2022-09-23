@@ -1,6 +1,10 @@
 import classNames from 'classnames';
+import dayjs from 'dayjs';
+import { arrayUnion, doc, setDoc } from 'firebase/firestore';
 import { ChangeEvent, Dispatch, SetStateAction, useState } from 'react';
 import { X } from 'react-feather';
+import { useAuthState } from 'react-firebase-hooks/auth';
+import { auth, db } from '../firebase';
 import { roundNumber } from '../helpers/math';
 import { AutoWidthInput } from './AutoWidthInput';
 
@@ -25,6 +29,9 @@ export const CoinModal = ({
 }: ModalProps) => {
   const [coinValue, setCoinValue] = useState<string>('0');
   const [usdValue, setUsdValue] = useState<number>(0);
+  const [user] = useAuthState(auth);
+
+  const today = dayjs().format('MMM D, YYYY');
 
   const inputHandler = (event: ChangeEvent<HTMLInputElement>) => {
     if (event.target.value.length <= 0) {
@@ -33,6 +40,27 @@ export const CoinModal = ({
       setUsdValue(event.target.valueAsNumber * currentMarketValue);
     }
     setCoinValue(event.target.value);
+  };
+
+  const transactionHandler = async () => {
+    if (user?.email) {
+      try {
+        await setDoc(doc(db, 'users', `${user.email}`), {
+          transactions: arrayUnion({
+            name: name,
+            buyOrSell: modalBuySell,
+            date: today,
+            coinAmmount: Number(coinValue),
+            usdAmmount: usdValue,
+          }),
+        });
+      } catch (error) {
+        console.log('error writing to database: ', error);
+      }
+    } else {
+      alert('Must be signed in to make a transaction');
+    }
+    setModalOpen(false);
   };
 
   if (!modalActive) {
@@ -76,8 +104,11 @@ export const CoinModal = ({
           <div>Current Balance</div>
           <div>0.125 {symbol.toUpperCase()}</div>
         </div>
-        <button className='bg-lightpink px-4 py-2 rounded font-bold text-darkblue cursor-pointer w-full'>
-          Purchase
+        <button
+          className='bg-lightpink px-4 py-2 rounded font-bold text-darkblue cursor-pointer w-full'
+          onClick={() => transactionHandler()}
+        >
+          {modalBuySell === 'buy' ? 'Purchase' : 'Sell'}
         </button>
       </div>
     </div>
