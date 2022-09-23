@@ -13,6 +13,9 @@ import { roundNumber } from '../helpers/math';
 import { CoinModal } from '../components/CoinModal';
 import { ConditionWrapper } from '../helpers/conditionalWrapper';
 import { TrendingDown, TrendingUp } from 'react-feather';
+import { useAuthState } from 'react-firebase-hooks/auth';
+import { auth } from '../firebase';
+import { TransactionLog } from '@/types';
 
 interface TimeRangeButton {
   name: string;
@@ -37,6 +40,7 @@ const axiosFetcher = async (
 
 const CoinPage: NextPage = (): JSX.Element => {
   const { pid } = useRouter().query;
+  const [user] = useAuthState(auth);
   const [coinDataResponse, setCoinDataResponse] = useState<ParsedCoin>();
   const [activeTimeButton, setActiveTimeButton] = useState<string>('1D');
   const [percentageChange, setPercentageChange] = useState<number>(0);
@@ -49,8 +53,21 @@ const CoinPage: NextPage = (): JSX.Element => {
   const [timeRangeButtons, setTimeRangeButtons] = useState<TimeRangeButton[]>(
     []
   );
+  const [transactions, setTransactions] = useState<TransactionLog[]>([]);
 
   useSWR([`/api/coins/${pid}`, setCoinDataResponse], axiosFetcher);
+
+  useEffect(() => {
+    if (user?.email && coinDataResponse?.name) {
+      axios
+        .get(
+          `api/db/transactions?user=${user.email}&coin=${coinDataResponse.name}`
+        )
+        .then((res) => {
+          setTransactions(res.data);
+        });
+    }
+  }, [user?.email, coinDataResponse?.name]);
 
   useEffect(() => {
     if (!modalOpen) {
@@ -121,7 +138,7 @@ const CoinPage: NextPage = (): JSX.Element => {
     return (
       <>
         <div className='w-full h-full bg-blackeye-blue'>
-          <div className='flex flex-col justify-between bg-darkblue h-max max-w-4xl mx-auto'>
+          <div className='flex flex-col min-h-screen justify-between bg-darkblue max-w-4xl mx-auto'>
             <ConditionWrapper
               condition={modalOpen}
               wrapper={(children) => (
@@ -207,15 +224,11 @@ const CoinPage: NextPage = (): JSX.Element => {
                   </div>
                 </div>
               </div>
-              <div className='flex flex-col grow bg-lightblue'>
+              {transactions.length > 0 ? <div className='flex flex-col grow bg-lightblue'>
                 <div className='flex flex-col items-center px-5 pb-3'>
-                  <Transaction />
-                  <Transaction />
-                  <Transaction />
-                  <Transaction />
-                  <Transaction />
+                  {transactions.map((transaction, index) => <Transaction key={index} {...transaction} />)}
                 </div>
-              </div>
+              </div> : <></>}
               <Nav />
             </ConditionWrapper>
 

@@ -1,11 +1,10 @@
 import axios from 'axios';
 import classNames from 'classnames';
 import dayjs from 'dayjs';
-import { arrayUnion, doc, setDoc } from 'firebase/firestore';
 import { ChangeEvent, Dispatch, SetStateAction, useState } from 'react';
 import { X } from 'react-feather';
 import { useAuthState } from 'react-firebase-hooks/auth';
-import { auth, db } from '../firebase';
+import { auth } from '../firebase';
 import { roundNumber } from '../helpers/math';
 import { AutoWidthInput } from './AutoWidthInput';
 
@@ -46,14 +45,18 @@ export const CoinModal = ({
   const transactionHandler = async () => {
     if (user?.email) {
       try {
-        await axios.put('api/db/users', {
+        const response = await axios.put('api/db/users', {
           user: user.email,
           name: name,
+          symbol: symbol.toUpperCase(),
           buyOrSell: modalBuySell,
           date: today,
           coinAmmount: Number(coinValue),
           usdAmmount: usdValue,
         });
+        if (response.status === 500) {
+          alert('FAIL');
+        }
       } catch (error) {
         console.log('error sending transaction data: ', error);
       }

@@ -6,30 +6,24 @@ export default async function handler(
   request: NextApiRequest,
   response: NextApiResponse
 ) {
-  const { user, name, buyOrSell, date, coinAmmount, usdAmmount } = request.body;
+  const { user, name, symbol, buyOrSell, date, coinAmmount, usdAmmount } = request.body;
   try {
     await setDoc(doc(db, 'users', user), {
       transactions: arrayUnion({
         name,
+        symbol,
         buyOrSell,
         date,
         coinAmmount,
         usdAmmount,
       }),
-    });
+    }, {merge: true});
   } catch (error) {
     console.log('error writing to database: ', error);
+    response.statusCode = 500;
+    response.send({});
+    return;
   }
 
-  response.status(200).send('success');
+  response.send({});
 }
-
-// await setDoc(doc(db, 'users', `${user.email}`), {
-//   transactions: arrayUnion({
-//     name: name,
-//     buyOrSell: modalBuySell,
-//     date: today,
-//     coinAmmount: Number(coinValue),
-//     usdAmmount: usdValue,
-//   }),
-// });
