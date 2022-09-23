@@ -1,3 +1,4 @@
+import axios from 'axios';
 import classNames from 'classnames';
 import dayjs from 'dayjs';
 import { arrayUnion, doc, setDoc } from 'firebase/firestore';
@@ -45,17 +46,16 @@ export const CoinModal = ({
   const transactionHandler = async () => {
     if (user?.email) {
       try {
-        await setDoc(doc(db, 'users', `${user.email}`), {
-          transactions: arrayUnion({
-            name: name,
-            buyOrSell: modalBuySell,
-            date: today,
-            coinAmmount: Number(coinValue),
-            usdAmmount: usdValue,
-          }),
+        await axios.put('api/db/users', {
+          user: user.email,
+          name: name,
+          buyOrSell: modalBuySell,
+          date: today,
+          coinAmmount: Number(coinValue),
+          usdAmmount: usdValue,
         });
       } catch (error) {
-        console.log('error writing to database: ', error);
+        console.log('error sending transaction data: ', error);
       }
     } else {
       alert('Must be signed in to make a transaction');
