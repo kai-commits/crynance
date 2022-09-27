@@ -1,8 +1,8 @@
 export interface TransactionLog {
   buyOrSell: string;
-  coinAmmount: number;
+  coinAmount: number;
   date: string;
   name: string;
   symbol: string;
-  usdAmmount: number;
+  usdAmount: number;
 }

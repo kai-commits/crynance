@@ -1,13 +1,13 @@
-// bought, sold, date, ammount, ammount in usd
+// bought, sold, date, amount, amount in usd
 
 import { TransactionLog } from '@/types';
 
 export const Transaction = ({
   buyOrSell,
   symbol,
-  coinAmmount,
+  coinAmount,
   date,
-  usdAmmount,
+  usdAmount,
 }: TransactionLog): JSX.Element => {
   return (
     <div className='w-full bg-offwhite max-w-4xl py-2 mt-3 rounded cursor-pointer'>
@@ -21,8 +21,8 @@ export const Transaction = ({
           </div>
         </div>
         <div className='flex flex-col items-end mx-3 font-medium'>
-          <div className='text-lg'>{coinAmmount} {symbol}</div>
-          <div className='text-sm text-darkblue'>${usdAmmount}</div>
+          <div className='text-lg'>{coinAmount} {symbol}</div>
+          <div className='text-sm text-darkblue'>${usdAmount}</div>
         </div>
       </div>
     </div>

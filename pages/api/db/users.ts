@@ -6,7 +6,7 @@ export default async function handler(
   request: NextApiRequest,
   response: NextApiResponse
 ) {
-  const { user, name, symbol, buyOrSell, date, coinAmmount, usdAmmount } = request.body;
+  const { user, name, symbol, buyOrSell, date, coinAmount, usdAmount } = request.body;
   try {
     await setDoc(doc(db, 'users', user), {
       transactions: arrayUnion({
@@ -14,8 +14,8 @@ export default async function handler(
         symbol,
         buyOrSell,
         date,
-        coinAmmount,
-        usdAmmount,
+        coinAmount,
+        usdAmount,
       }),
     }, {merge: true});
   } catch (error) {

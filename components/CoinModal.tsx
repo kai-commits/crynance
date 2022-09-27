@@ -51,8 +51,8 @@ export const CoinModal = ({
           symbol: symbol.toUpperCase(),
           buyOrSell: modalBuySell,
           date: today,
-          coinAmmount: Number(coinValue),
-          usdAmmount: usdValue,
+          coinAmount: Number(coinValue),
+          usdAmount: usdValue,
         });
         if (response.status === 500) {
           alert('FAIL');

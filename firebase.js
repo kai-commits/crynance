@@ -25,8 +25,8 @@ users -> user@user.com ->
 
 coinsOwned[]: {
   coinID: string,
-  totalAmmount: number,
-  totalAmmountUSD: number,
+  totalAmount: number,
+  totalAmountUSD: number,
   initialAmountUSD: number,
 }
 
@@ -34,7 +34,7 @@ transactions[]: {
   coinID: string,
   bought: boolean,
   date: datetime,
-  ammount: number,
-  ammountUSD: number,
+  amount: number,
+  amountUSD: number,
 }
 */
