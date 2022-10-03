@@ -224,11 +224,17 @@ const CoinPage: NextPage = (): JSX.Element => {
                   </div>
                 </div>
               </div>
-              {transactions.length > 0 ? <div className='flex flex-col grow bg-lightblue'>
-                <div className='flex flex-col items-center px-5 pb-3'>
-                  {transactions.map((transaction, index) => <Transaction key={index} {...transaction} />)}
+              {transactions.length > 0 ? (
+                <div className='flex flex-col grow bg-lightblue'>
+                  <div className='flex flex-col items-center px-5 pb-3'>
+                    {transactions.map((transaction, index) => (
+                      <Transaction key={index} {...transaction} />
+                    ))}
+                  </div>
                 </div>
-              </div> : <></>}
+              ) : (
+                <></>
+              )}
               <Nav />
             </ConditionWrapper>
 

@@ -1,15 +1,5 @@
-import {
-  setDoc,
-  doc,
-  arrayUnion,
-  query,
-  getDoc,
-  collection,
-  where,
-  getDocs,
-} from 'firebase/firestore';
+import { doc, getDoc } from 'firebase/firestore';
 import { NextApiRequest, NextApiResponse } from 'next';
-import { useRouter } from 'next/router';
 import { db } from '@/firebase';
 import { TransactionLog } from '@/types';
 
