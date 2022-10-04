@@ -16,6 +16,7 @@ import { TrendingDown, TrendingUp } from 'react-feather';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth } from '../firebase';
 import { TransactionLog } from '@/types';
+import { axiosFetcherSetter } from '@/helpers/axiosFetcher';
 
 interface TimeRangeButton {
   name: string;
@@ -29,13 +30,6 @@ const { today, oneDayAgo, oneWeekAgo, oneMonthAgo, oneYearAgo } = {
   oneWeekAgo: dayjs().subtract(1, 'week').unix(),
   oneMonthAgo: dayjs().subtract(1, 'month').unix(),
   oneYearAgo: dayjs().subtract(1, 'year').unix(),
-};
-
-const axiosFetcher = async (
-  url: string,
-  setter: Dispatch<SetStateAction<ParsedCoin>>
-) => {
-  return await axios.get(`${url}`).then((res) => setter(res.data));
 };
 
 const CoinPage: NextPage = (): JSX.Element => {
@@ -55,7 +49,7 @@ const CoinPage: NextPage = (): JSX.Element => {
   );
   const [transactions, setTransactions] = useState<TransactionLog[]>([]);
 
-  useSWR([`/api/coins/${pid}`, setCoinDataResponse], axiosFetcher);
+  useSWR([`/api/coins/${pid}`, setCoinDataResponse], axiosFetcherSetter);
 
   useEffect(() => {
     if (user?.email && coinDataResponse?.name) {

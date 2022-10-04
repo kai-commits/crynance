@@ -5,7 +5,8 @@ import { Main } from '../components/Main';
 import { Nav } from '../components/Nav';
 import { auth } from '../firebase';
 import { useAuthState } from 'react-firebase-hooks/auth';
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
+import axios from 'axios';
 
 export interface ParsedMarkets {
   id: string;
@@ -18,7 +19,7 @@ export interface ParsedMarkets {
 
 const Home: NextPage = () => {
   const [user] = useAuthState(auth);
-  console.log('user: ', user);
+  const [totalUSDValue, setTotalUSDValue] = useState(0);
 
   const [filteredMarket, setFilteredMarket] = useState<ParsedMarkets[]>([]);
 
@@ -38,6 +39,14 @@ const Home: NextPage = () => {
     []
   );
 
+  useEffect(() => {
+    if (user?.email) {
+      axios.get(`api/db/totalStartValue?user=${user?.email}`).then((res) => {
+        setTotalUSDValue(res.data);
+      });
+    }
+  }, [user?.email]);
+
   return (
     <>
       <Head>
@@ -47,7 +56,7 @@ const Home: NextPage = () => {
       </Head>
       <div className='w-full h-full bg-blackeye-blue'>
         <div className='flex flex-col justify-between h-max mx-auto min-w-fit max-w-4xl'>
-          <Header filterMarket={filterMarket} />
+          <Header filterMarket={filterMarket} totalUSDValue={totalUSDValue} />
           <Main filteredMarket={filteredMarket} />
           <Nav />
         </div>

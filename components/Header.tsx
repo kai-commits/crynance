@@ -1,12 +1,17 @@
+import { roundNumber } from '@/helpers/math';
 import Link from 'next/link';
 import { ParsedMarkets } from '../pages';
 import { Search } from './Search';
 
 interface HeaderProps {
   filterMarket: (marketData: ParsedMarkets[], query: string) => void;
+  totalUSDValue: number;
 }
 
-export const Header = ({ filterMarket }: HeaderProps): JSX.Element => {
+export const Header = ({
+  filterMarket,
+  totalUSDValue,
+}: HeaderProps): JSX.Element => {
   return (
     <div className='bg-darkblue sticky w-full top-0 z-[100]'>
       <div className='px-5'>
@@ -16,7 +21,7 @@ export const Header = ({ filterMarket }: HeaderProps): JSX.Element => {
               Crynance
             </div>
             <div className='text-offwhite text-5xl'>$500</div>
-            <div className='text-lightblue p-4'>$400</div>
+            <div className='text-lightblue p-4'>${roundNumber(totalUSDValue, 2)}</div>
           </div>
           <div className='flex justify-between w-full mb-8'>
             <Link href='/bought'>
