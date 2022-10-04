@@ -20,7 +20,6 @@ export interface ParsedMarkets {
 const Home: NextPage = () => {
   const [user] = useAuthState(auth);
   const [totalUSDValue, setTotalUSDValue] = useState(0);
-
   const [filteredMarket, setFilteredMarket] = useState<ParsedMarkets[]>([]);
 
   const filterMarket = useCallback(
@@ -57,7 +56,7 @@ const Home: NextPage = () => {
       <div className='w-full h-full bg-blackeye-blue'>
         <div className='flex flex-col justify-between h-max mx-auto min-w-fit max-w-4xl'>
           <Header filterMarket={filterMarket} totalUSDValue={totalUSDValue} />
-          <Main filteredMarket={filteredMarket} />
+          <Main filteredMarket={filteredMarket} user={user?.email} />
           <Nav />
         </div>
       </div>

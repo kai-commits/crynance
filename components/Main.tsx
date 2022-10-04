@@ -3,9 +3,10 @@ import { Coin } from './Coin';
 
 interface MainProps {
   filteredMarket: ParsedMarkets[];
+  user: string | null | undefined;
 }
 
-export const Main = ({ filteredMarket }: MainProps): JSX.Element => {
+export const Main = ({ filteredMarket, user }: MainProps): JSX.Element => {
   return (
     <div className='flex items-center flex-col bg-lightblue px-5 h-max pb-3 min-h-screen'>
       {filteredMarket?.map((coin: ParsedMarkets) => (
@@ -17,6 +18,7 @@ export const Main = ({ filteredMarket }: MainProps): JSX.Element => {
           logo={coin.logo}
           currentMarketValue={coin.currentMarketValue}
           priceChangePercentage={coin.priceChangePercentage}
+          user={user}
         />
       ))}
     </div>
