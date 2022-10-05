@@ -1,3 +1,4 @@
+import { roundNumber } from '@/helpers/math';
 import { TransactionLog } from '@/types';
 
 export const Transaction = ({
@@ -20,7 +21,7 @@ export const Transaction = ({
         </div>
         <div className='flex flex-col items-end mx-3 font-medium'>
           <div className='text-lg'>{coinAmount} {symbol}</div>
-          <div className='text-sm text-darkblue'>${usdAmount}</div>
+          <div className='text-sm text-darkblue'>${roundNumber(usdAmount, 2)}</div>
         </div>
       </div>
     </div>

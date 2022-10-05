@@ -268,6 +268,7 @@ const CoinPage: NextPage = (): JSX.Element => {
               name={coinDataResponse.name}
               symbol={coinDataResponse.symbol}
               currentMarketValue={coinDataResponse.currentMarketValue}
+              totalAmount={totalCoinData.totalAmount}
             />
           </div>
         </div>

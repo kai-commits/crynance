@@ -67,7 +67,7 @@ export const Coin = ({
             </div>
           </div>
           <div className='flex flex-col items-end mx-3 font-medium'>
-            <div className='text-lg'>{total.totalAmount}</div>
+            <div className='text-lg'>{roundNumber(total.totalAmount, 4)}</div>
             <div className='text-sm text-darkblue'>${roundNumber(total.totalAmount * currentMarketValue, 2)}</div>
           </div>
         </div>

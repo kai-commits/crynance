@@ -16,6 +16,7 @@ interface ModalProps {
   name: string;
   symbol: string;
   currentMarketValue: number;
+  totalAmount: number;
 }
 
 export const CoinModal = ({
@@ -26,6 +27,7 @@ export const CoinModal = ({
   name,
   symbol,
   currentMarketValue,
+  totalAmount,
 }: ModalProps) => {
   const [coinValue, setCoinValue] = useState<string>('0');
   const [usdValue, setUsdValue] = useState<number>(0);
@@ -105,7 +107,7 @@ export const CoinModal = ({
         </div>
         <div className='flex justify-between w-full pb-4 text-blackeye-blue'>
           <div>Current Balance</div>
-          <div>0.125 {symbol.toUpperCase()}</div>
+          <div>{roundNumber(totalAmount, 4)} {symbol.toUpperCase()}</div>
         </div>
         <button
           className='bg-lightpink px-4 py-2 rounded font-bold text-darkblue cursor-pointer w-full'
