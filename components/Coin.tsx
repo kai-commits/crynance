@@ -12,6 +12,7 @@ interface Coin {
   currentMarketValue: number;
   priceChangePercentage: number;
   user: string | null | undefined;
+  coinValue: (coinAmount: number, usdValue: number) => void;
 }
 
 export const Coin = ({
@@ -22,6 +23,7 @@ export const Coin = ({
   currentMarketValue,
   priceChangePercentage,
   user,
+  coinValue,
 }: Coin): JSX.Element => {
   const [total, setTotal] = useState<{
     totalUSDValue: number;
@@ -33,6 +35,10 @@ export const Coin = ({
       .get(`api/db/coinValue/${name}?user=${user}`)
       .then((res) => setTotal(res.data));
   }, [name, user]);
+
+  useEffect(() => {
+    coinValue(total.totalAmount, currentMarketValue);
+  }, [coinValue, currentMarketValue, total.totalAmount]);
 
   return (
     <Link href={`/${id}`}>
