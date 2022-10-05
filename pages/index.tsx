@@ -19,9 +19,9 @@ export interface ParsedMarkets {
 
 const Home: NextPage = () => {
   const [user] = useAuthState(auth);
-  const [totalUSDValue, setTotalUSDValue] = useState(0);
+  const [initialPortfolioValue, setInitialPortfolioValue] = useState(0);
+  const [currentPortfolioValue, setCurrentPortfolioValue] = useState(0);
   const [filteredMarket, setFilteredMarket] = useState<ParsedMarkets[]>([]);
-  const [totalPortfolioValue, setTotalPortfolioValue] = useState(0);
 
   const filterMarket = useCallback(
     (marketData: ParsedMarkets[], query: string) => {
@@ -40,13 +40,13 @@ const Home: NextPage = () => {
   );
 
   const coinValue = useCallback((coinAmount: number, usdValue: number) => {
-    setTotalPortfolioValue((prev) => prev += (coinAmount * usdValue));
+    setCurrentPortfolioValue((prev) => (prev += coinAmount * usdValue));
   }, []);
 
   useEffect(() => {
     if (user?.email) {
       axios.get(`api/db/totalStartValue?user=${user?.email}`).then((res) => {
-        setTotalUSDValue(res.data);
+        setInitialPortfolioValue(res.data);
       });
     }
   }, [user?.email]);
@@ -60,8 +60,16 @@ const Home: NextPage = () => {
       </Head>
       <div className='w-full h-full bg-blackeye-blue'>
         <div className='flex flex-col justify-between h-max mx-auto min-w-fit max-w-4xl'>
-          <Header filterMarket={filterMarket} totalUSDValue={totalUSDValue} currentUSDValue={totalPortfolioValue} />
-          <Main filteredMarket={filteredMarket} user={user?.email} coinValue={coinValue} />
+          <Header
+            filterMarket={filterMarket}
+            initialPortfolioValue={initialPortfolioValue}
+            currentPortfolioValue={currentPortfolioValue}
+          />
+          <Main
+            filteredMarket={filteredMarket}
+            user={user?.email}
+            coinValue={coinValue}
+          />
           <Nav />
         </div>
       </div>

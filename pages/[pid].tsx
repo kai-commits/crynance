@@ -6,7 +6,6 @@ import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import classNames from 'classnames';
 import dayjs from 'dayjs';
 import useSWR from 'swr';
-import { ParsedCoin } from './api/coins/[pid]';
 import { Transaction } from '../components/Transaction';
 import axios from 'axios';
 import { roundNumber } from '../helpers/math';
@@ -15,13 +14,19 @@ import { ConditionWrapper } from '../helpers/conditionalWrapper';
 import { TrendingDown, TrendingUp } from 'react-feather';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth } from '../firebase';
-import { TransactionLog } from '@/types';
+import { ParsedCoin, TransactionLog } from '@/types';
 import { axiosFetcherSetter } from '@/helpers/axiosFetcher';
 
 interface TimeRangeButton {
   name: string;
   queryString: string;
   percentageChange: number;
+}
+
+interface TotalCoinData {
+  totalAmount: number;
+  totalCurrentValue: number;
+  totalInitialValue: number;
 }
 
 const { today, oneDayAgo, oneWeekAgo, oneMonthAgo, oneYearAgo } = {
@@ -41,13 +46,18 @@ const CoinPage: NextPage = (): JSX.Element => {
   const [modalActive, setModalActive] = useState<boolean>(false);
   const [modalOpen, setModalOpen] = useState<boolean>(false);
   const [modalBuySell, setModalBuySell] = useState<string>('');
+  const [transactions, setTransactions] = useState<TransactionLog[]>([]);
   const [queryParams, setQueryParams] = useState<string>(
     `?from=${oneDayAgo}&to=${today}`
   );
   const [timeRangeButtons, setTimeRangeButtons] = useState<TimeRangeButton[]>(
     []
   );
-  const [transactions, setTransactions] = useState<TransactionLog[]>([]);
+  const [totalCoinData, setTotalCoinData] = useState<TotalCoinData>({
+    totalAmount: 0,
+    totalCurrentValue: 0,
+    totalInitialValue: 0,
+  });
 
   useSWR([`/api/coins/${pid}`, setCoinDataResponse], axiosFetcherSetter);
 
@@ -70,6 +80,24 @@ const CoinPage: NextPage = (): JSX.Element => {
       }, 500);
     }
   }, [modalOpen]);
+
+  useEffect(() => {
+    if (coinDataResponse) {
+      const totalAmount = transactions
+        .map((transaction: TransactionLog) => transaction.coinAmount)
+        .reduce((prev, curr) => prev + curr, 0);
+      const totalInitialValue = transactions
+        .map((transactions: TransactionLog) => transactions.usdAmount)
+        .reduce((prev, curr) => prev + curr, 0);
+      const totalCurrentValue =
+        totalAmount * coinDataResponse.currentMarketValue;
+      setTotalCoinData({
+        totalAmount,
+        totalInitialValue,
+        totalCurrentValue,
+      });
+    }
+  }, [coinDataResponse, transactions]);
 
   useEffect(() => {
     if (coinDataResponse) {
@@ -182,15 +210,15 @@ const CoinPage: NextPage = (): JSX.Element => {
                   </div>
                   <div className='flex flex-col'>
                     <div className='flex justify-center text-lightpink text-xl my-5'>
-                      0.146 {coinDataResponse.symbol.toUpperCase()}
+                      {roundNumber(totalCoinData.totalAmount, 4)} {coinDataResponse.symbol.toUpperCase()}
                     </div>
                     <div className='flex justify-between text-offwhite'>
                       <div>Current Balance</div>
-                      <div>$500</div>
+                      <div>${roundNumber(totalCoinData.totalCurrentValue, 2)}</div>
                     </div>
                     <div className='flex justify-between text-lightblue'>
                       <div>Starting Balance</div>
-                      <div>$400</div>
+                      <div>${roundNumber(totalCoinData.totalInitialValue, 2)}</div>
                     </div>
                   </div>
                   <div className='flex justify-between w-full my-8'>

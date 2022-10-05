@@ -1,3 +1,4 @@
+import { ParsedCoin } from '@/types';
 import axios from 'axios';
 import { NextApiRequest, NextApiResponse } from 'next';
 
@@ -32,18 +33,6 @@ interface CoinGeckoCoins {
   symbol: string;
   total_supply: number;
   total_volume: number;
-}
-
-export interface ParsedCoin {
-  id: string;
-  symbol: string;
-  name: string;
-  logo: string;
-  currentMarketValue: number;
-  priceChangePercentage1D: number;
-  priceChangePercentage1W: number;
-  priceChangePercentage1M: number;
-  priceChangePercentage1Y: number;
 }
 
 export default async function handler(

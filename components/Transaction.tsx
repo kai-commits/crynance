@@ -1,5 +1,3 @@
-// bought, sold, date, amount, amount in usd
-
 import { TransactionLog } from '@/types';
 
 export const Transaction = ({

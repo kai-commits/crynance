@@ -5,14 +5,14 @@ import { Search } from './Search';
 
 interface HeaderProps {
   filterMarket: (marketData: ParsedMarkets[], query: string) => void;
-  totalUSDValue: number;
-  currentUSDValue: number;
+  initialPortfolioValue: number;
+  currentPortfolioValue: number;
 }
 
 export const Header = ({
   filterMarket,
-  totalUSDValue,
-  currentUSDValue,
+  initialPortfolioValue,
+  currentPortfolioValue,
 }: HeaderProps): JSX.Element => {
   return (
     <div className='bg-darkblue sticky w-full top-0 z-[100]'>
@@ -22,8 +22,12 @@ export const Header = ({
             <div className='text-lightpink text-3xl font-bold cursor-pointer p-4'>
               Crynance
             </div>
-            <div className='text-offwhite text-5xl'>${roundNumber(currentUSDValue, 2)}</div>
-            <div className='text-lightblue p-4'>${roundNumber(totalUSDValue, 2)}</div>
+            <div className='text-offwhite text-5xl'>
+              ${roundNumber(currentPortfolioValue, 2)}
+            </div>
+            <div className='text-lightblue p-4'>
+              ${roundNumber(initialPortfolioValue, 2)}
+            </div>
           </div>
           <div className='flex justify-between w-full mb-8'>
             <Link href='/bought'>
