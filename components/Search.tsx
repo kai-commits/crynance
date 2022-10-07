@@ -1,25 +1,14 @@
-import { auth } from '@/firebase';
-import axios from 'axios';
+import { ParsedMarkets } from '@/types';
 import { useEffect, useState } from 'react';
 import { Search as SearchIcon } from 'react-feather';
-import { useAuthState } from 'react-firebase-hooks/auth';
-import { ParsedMarkets } from '../pages';
 
 interface SearchProps {
   filterMarket: (marketData: ParsedMarkets[], query: string) => void;
+  marketsResponse: ParsedMarkets[];
 }
 
-export const Search = ({ filterMarket }: SearchProps) => {
-  const [user] = useAuthState(auth);
-  const [marketsResponse, setMarketsResponse] = useState();
+export const Search = ({ filterMarket, marketsResponse }: SearchProps) => {
   const [value, setValue] = useState<string>('');
-
-  useEffect(() => {
-    const getMarketsResponse = async () => {
-      await axios.get(`/api/markets?user=${user?.email}`).then((res) => setMarketsResponse(res.data));
-    }
-    getMarketsResponse();
-  }, [user]);
 
   useEffect(() => {
     if (marketsResponse) {

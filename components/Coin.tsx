@@ -1,7 +1,6 @@
-import axios from 'axios';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { roundNumber } from '../helpers/math';
 
 interface Coin {
@@ -11,8 +10,8 @@ interface Coin {
   logo: string;
   currentMarketValue: number;
   priceChangePercentage: number;
-  user: string | null | undefined;
-  coinValue: (coinAmount: number, usdValue: number) => void;
+  totalAmount: number;
+  totalUSDValue: number;
 }
 
 export const Coin = ({
@@ -22,25 +21,8 @@ export const Coin = ({
   logo,
   currentMarketValue,
   priceChangePercentage,
-  user,
-  coinValue,
+  totalAmount,
 }: Coin): JSX.Element => {
-  const [total, setTotal] = useState<{
-    totalUSDValue: number;
-    totalAmount: number;
-  }>({ totalAmount: 0, totalUSDValue: 0 });
-
-  useEffect(() => {
-    axios
-      .get(`api/db/coinValue/${name}?user=${user}`)
-      .then((res) => setTotal(res.data));
-  }, [name, user]);
-
-  useEffect(() => {
-    coinValue(total.totalAmount, currentMarketValue);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [coinValue, total.totalAmount]);
-
   return (
     <Link href={`/${id}`}>
       <div className='w-full bg-offwhite max-w-4xl py-2 mt-3 rounded cursor-pointer'>
@@ -68,8 +50,10 @@ export const Coin = ({
             </div>
           </div>
           <div className='flex flex-col items-end mx-3 font-medium'>
-            <div className='text-lg'>{roundNumber(total.totalAmount, 4)}</div>
-            <div className='text-sm text-darkblue'>${roundNumber(total.totalAmount * currentMarketValue, 2)}</div>
+            <div className='text-lg'>{roundNumber(totalAmount, 4)}</div>
+            <div className='text-sm text-darkblue'>
+              ${roundNumber(totalAmount * currentMarketValue, 2)}
+            </div>
           </div>
         </div>
       </div>

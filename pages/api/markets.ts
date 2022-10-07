@@ -2,7 +2,7 @@ import axios from 'axios';
 import { getDoc, doc, DocumentData } from 'firebase/firestore';
 import { db } from '@/firebase';
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { TransactionLog } from '@/types';
+import { ParsedMarkets, TransactionLog } from '@/types';
 
 interface CoinGeckoMarkets {
   id: string;
@@ -33,17 +33,6 @@ interface CoinGeckoMarkets {
   last_updated: string;
 }
 
-interface ParsedMarkets {
-  id: string;
-  symbol: string;
-  name: string;
-  logo: string;
-  currentMarketValue: number;
-  priceChangePercentage: number;
-  totalAmount: number;
-  totalUSDValue: number;
-}
-
 export default async function handler(
   request: NextApiRequest,
   response: NextApiResponse
@@ -61,23 +50,23 @@ export default async function handler(
   const getTotals = async (coinName: string) => {
     let totalUSDValue = 0;
     let totalAmount = 0;
-      
-      docRef?.transactions.map((transaction: TransactionLog) => {
-        if (transaction.name === coinName) {
-          if (transaction.buyOrSell === 'buy') {
-            totalUSDValue += transaction.usdAmount;
-            totalAmount += transaction.coinAmount;
-          }
-          if (transaction.buyOrSell === 'sell') {
-            totalUSDValue -= transaction.usdAmount;
-            totalAmount -= transaction.coinAmount;
-          }
+
+    docRef?.transactions.map((transaction: TransactionLog) => {
+      if (transaction.name === coinName) {
+        if (transaction.buyOrSell === 'buy') {
+          totalUSDValue += transaction.usdAmount;
+          totalAmount += transaction.coinAmount;
         }
-      })
+        if (transaction.buyOrSell === 'sell') {
+          totalUSDValue -= transaction.usdAmount;
+          totalAmount -= transaction.coinAmount;
+        }
+      }
+    });
     return { totalAmount, totalUSDValue };
   };
 
-  const parsedData = async (): Promise<ParsedMarkets[]> => 
+  const parsedData = async (): Promise<ParsedMarkets[]> =>
     Promise.all(
       marketData.map(async (coin: CoinGeckoMarkets) => {
         const { totalAmount, totalUSDValue } = await getTotals(coin.name);
@@ -93,6 +82,8 @@ export default async function handler(
         };
       })
     );
-  const sortedData = (await parsedData()).sort((a, b) => b.totalUSDValue - a.totalUSDValue);
+  const sortedData = (await parsedData()).sort(
+    (a, b) => b.totalUSDValue - a.totalUSDValue
+  );
   response.status(200).send(sortedData);
 }

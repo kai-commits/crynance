@@ -18,3 +18,14 @@ export interface ParsedCoin {
   priceChangePercentage1M: number;
   priceChangePercentage1Y: number;
 }
+
+export interface ParsedMarkets {
+  id: string;
+  symbol: string;
+  name: string;
+  logo: string;
+  currentMarketValue: number;
+  priceChangePercentage: number;
+  totalAmount: number;
+  totalUSDValue: number;
+}

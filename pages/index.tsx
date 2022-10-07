@@ -7,20 +7,13 @@ import { auth } from '../firebase';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { useCallback, useEffect, useState } from 'react';
 import axios from 'axios';
-
-export interface ParsedMarkets {
-  id: string;
-  symbol: string;
-  name: string;
-  logo: string;
-  currentMarketValue: number;
-  priceChangePercentage: number;
-}
+import { ParsedMarkets } from '@/types';
 
 const Home: NextPage = () => {
   const [user] = useAuthState(auth);
   const [initialPortfolioValue, setInitialPortfolioValue] = useState(0);
   const [currentPortfolioValue, setCurrentPortfolioValue] = useState(0);
+  const [marketsResponse, setMarketsResponse] = useState<ParsedMarkets[]>([]);
   const [filteredMarket, setFilteredMarket] = useState<ParsedMarkets[]>([]);
 
   const filterMarket = useCallback(
@@ -39,17 +32,29 @@ const Home: NextPage = () => {
     []
   );
 
-  const coinValue = useCallback((coinAmount: number, usdValue: number) => {
-    setCurrentPortfolioValue((prev) => prev += coinAmount * usdValue);
-  }, []);
+  useEffect(() => {
+    const getMarketsResponse = async () => {
+      await axios
+        .get(`/api/markets?user=${user?.email}`)
+        .then((res) => setMarketsResponse(res.data));
+    };
+    getMarketsResponse();
+  }, [user]);
 
   useEffect(() => {
-    if (user?.email) {
-      axios.get(`api/db/totalStartValue?user=${user?.email}`).then((res) => {
-        setInitialPortfolioValue(res.data);
-      });
+    if (marketsResponse) {
+      setCurrentPortfolioValue(
+        marketsResponse
+          .map((res) => res.totalAmount * res.currentMarketValue)
+          .reduce((prev, curr) => prev + curr, 0)
+      );
+      setInitialPortfolioValue(
+        marketsResponse
+          .map((res) => res.totalUSDValue)
+          .reduce((prev, curr) => prev + curr, 0)
+      );
     }
-  }, [user?.email]);
+  }, [marketsResponse]);
 
   return (
     <>
@@ -64,12 +69,9 @@ const Home: NextPage = () => {
             filterMarket={filterMarket}
             initialPortfolioValue={initialPortfolioValue}
             currentPortfolioValue={currentPortfolioValue}
+            marketsResponse={marketsResponse}
           />
-          <Main
-            filteredMarket={filteredMarket}
-            user={user?.email}
-            coinValue={coinValue}
-          />
+          <Main filteredMarket={filteredMarket} />
           <Nav />
         </div>
       </div>

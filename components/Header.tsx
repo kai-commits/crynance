@@ -1,18 +1,20 @@
 import { roundNumber } from '@/helpers/math';
+import { ParsedMarkets } from '@/types';
 import Link from 'next/link';
-import { ParsedMarkets } from '../pages';
 import { Search } from './Search';
 
 interface HeaderProps {
   filterMarket: (marketData: ParsedMarkets[], query: string) => void;
   initialPortfolioValue: number;
   currentPortfolioValue: number;
+  marketsResponse: ParsedMarkets[];
 }
 
 export const Header = ({
   filterMarket,
   initialPortfolioValue,
   currentPortfolioValue,
+  marketsResponse,
 }: HeaderProps): JSX.Element => {
   return (
     <div className='bg-darkblue sticky w-full top-0 z-[100]'>
@@ -43,7 +45,7 @@ export const Header = ({
           </div>
         </div>
       </div>
-      <Search filterMarket={filterMarket} />
+      <Search filterMarket={filterMarket} marketsResponse={marketsResponse} />
     </div>
   );
 };
