@@ -38,7 +38,8 @@ export const Coin = ({
 
   useEffect(() => {
     coinValue(total.totalAmount, currentMarketValue);
-  }, [coinValue, currentMarketValue, total.totalAmount]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [coinValue, total.totalAmount]);
 
   return (
     <Link href={`/${id}`}>

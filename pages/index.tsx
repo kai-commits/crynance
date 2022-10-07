@@ -40,7 +40,7 @@ const Home: NextPage = () => {
   );
 
   const coinValue = useCallback((coinAmount: number, usdValue: number) => {
-    setCurrentPortfolioValue((prev) => (prev += coinAmount * usdValue));
+    setCurrentPortfolioValue((prev) => prev += coinAmount * usdValue);
   }, []);
 
   useEffect(() => {
