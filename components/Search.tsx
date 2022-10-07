@@ -1,7 +1,8 @@
+import { auth } from '@/firebase';
+import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { Search as SearchIcon } from 'react-feather';
-import useSWR from 'swr';
-import { axiosFetcher } from '../helpers/axiosFetcher';
+import { useAuthState } from 'react-firebase-hooks/auth';
 import { ParsedMarkets } from '../pages';
 
 interface SearchProps {
@@ -9,8 +10,16 @@ interface SearchProps {
 }
 
 export const Search = ({ filterMarket }: SearchProps) => {
-  const { data: marketsResponse } = useSWR<ParsedMarkets[]>('/api/markets', axiosFetcher);
+  const [user] = useAuthState(auth);
+  const [marketsResponse, setMarketsResponse] = useState();
   const [value, setValue] = useState<string>('');
+
+  useEffect(() => {
+    const getMarketsResponse = async () => {
+      await axios.get(`/api/markets?user=${user?.email}`).then((res) => setMarketsResponse(res.data));
+    }
+    getMarketsResponse();
+  }, [user]);
 
   useEffect(() => {
     if (marketsResponse) {
