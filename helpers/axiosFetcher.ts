@@ -1,4 +1,4 @@
-import { ParsedCoin } from '@/pages/api/coins/[pid]';
+import { ParsedCoin } from '@/types';
 import axios from 'axios';
 import { Dispatch, SetStateAction } from 'react';
 

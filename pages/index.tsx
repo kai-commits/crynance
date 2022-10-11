@@ -11,8 +11,8 @@ import { ParsedMarkets } from '@/types';
 
 const Home: NextPage = () => {
   const [user] = useAuthState(auth);
-  const [initialPortfolioValue, setInitialPortfolioValue] = useState(0);
-  const [currentPortfolioValue, setCurrentPortfolioValue] = useState(0);
+  const [initialPortfolioValue, setInitialPortfolioValue] = useState<number>(0);
+  const [currentPortfolioValue, setCurrentPortfolioValue] = useState<number>(0);
   const [marketsResponse, setMarketsResponse] = useState<ParsedMarkets[]>([]);
   const [filteredMarket, setFilteredMarket] = useState<ParsedMarkets[]>([]);
 

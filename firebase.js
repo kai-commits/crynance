@@ -19,22 +19,3 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
 export const db = getFirestore(app);
-
-/*
-users -> user@user.com ->
-
-coinsOwned[]: {
-  coinID: string,
-  totalAmount: number,
-  totalAmountUSD: number,
-  initialAmountUSD: number,
-}
-
-transactions[]: {
-  coinID: string,
-  bought: boolean,
-  date: datetime,
-  amount: number,
-  amountUSD: number,
-}
-*/
