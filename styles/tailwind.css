@@ -13,4 +13,7 @@
   input[type='search']::-webkit-search-results-decoration {
     display: none;
   }
+  input[type='number'] {
+    -moz-appearance: textfield;
+  }
 }

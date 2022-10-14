@@ -66,6 +66,7 @@ export const CoinModal = ({
       alert('Must be signed in to make a transaction');
     }
     setModalOpen(false);
+    window.location.reload();
   };
 
   if (!modalActive) {

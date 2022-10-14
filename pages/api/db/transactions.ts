@@ -24,5 +24,6 @@ export default async function handler(
     response.send({});
     return;
   }
-  response.status(200).send(transactionData);
+  const sortedTransactionData = transactionData.reverse();
+  response.status(200).send(sortedTransactionData);
 }

@@ -2,10 +2,9 @@ import { NextPage } from 'next';
 import { useRouter } from 'next/router';
 import { LineChart } from '../components/graphs/LineChart';
 import { Nav } from '../components/Nav';
-import { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import classNames from 'classnames';
 import dayjs from 'dayjs';
-import useSWR from 'swr';
 import { Transaction } from '../components/Transaction';
 import axios from 'axios';
 import { roundNumber } from '../helpers/math';
@@ -15,7 +14,6 @@ import { TrendingDown, TrendingUp } from 'react-feather';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth } from '../firebase';
 import { ParsedCoin, TransactionLog } from '@/types';
-import { axiosFetcherSetter } from '@/helpers/axiosFetcher';
 
 interface TimeRangeButton {
   name: string;
@@ -59,7 +57,13 @@ const CoinPage: NextPage = (): JSX.Element => {
     totalInitialValue: 0,
   });
 
-  useSWR([`/api/coins/${pid}`, setCoinDataResponse], axiosFetcherSetter);
+  useEffect(() => {
+    if (pid !== undefined) {
+      axios
+        .get(`/api/coins/${pid}`)
+        .then((res) => setCoinDataResponse(res.data));
+    }
+  }, [pid]);
 
   useEffect(() => {
     if (user?.email && coinDataResponse?.name) {
@@ -84,10 +88,22 @@ const CoinPage: NextPage = (): JSX.Element => {
   useEffect(() => {
     if (coinDataResponse) {
       const totalAmount = transactions
-        .map((transaction: TransactionLog) => transaction.coinAmount)
+        .map((transaction: TransactionLog) => {
+          if (transaction.buyOrSell === 'buy') {
+            return transaction.coinAmount;
+          } else {
+            return -transaction.coinAmount;
+          }
+        })
         .reduce((prev, curr) => prev + curr, 0);
       const totalInitialValue = transactions
-        .map((transactions: TransactionLog) => transactions.usdAmount)
+        .map((transactions: TransactionLog) => {
+          if (transactions.buyOrSell === 'buy') {
+            return transactions.usdAmount;
+          } else {
+            return -transactions.usdAmount;
+          }
+        })
         .reduce((prev, curr) => prev + curr, 0);
       const totalCurrentValue =
         totalAmount * coinDataResponse.currentMarketValue;
@@ -210,15 +226,20 @@ const CoinPage: NextPage = (): JSX.Element => {
                   </div>
                   <div className='flex flex-col'>
                     <div className='flex justify-center text-lightpink text-xl my-5'>
-                      {roundNumber(totalCoinData.totalAmount, 4)} {coinDataResponse.symbol.toUpperCase()}
+                      {roundNumber(totalCoinData.totalAmount, 4)}{' '}
+                      {coinDataResponse.symbol.toUpperCase()}
                     </div>
                     <div className='flex justify-between text-offwhite'>
                       <div>Current Balance</div>
-                      <div>${roundNumber(totalCoinData.totalCurrentValue, 2)}</div>
+                      <div>
+                        ${roundNumber(totalCoinData.totalCurrentValue, 2)}
+                      </div>
                     </div>
                     <div className='flex justify-between text-lightblue'>
                       <div>Starting Balance</div>
-                      <div>${roundNumber(totalCoinData.totalInitialValue, 2)}</div>
+                      <div>
+                        ${roundNumber(totalCoinData.totalInitialValue, 2)}
+                      </div>
                     </div>
                   </div>
                   <div className='flex justify-between w-full my-8'>
