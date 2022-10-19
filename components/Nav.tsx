@@ -10,10 +10,12 @@ export const Nav = (): JSX.Element => {
 
   return (
     <div className='flex px-5 bg-blackeye-blue w-full sticky bottom-0 z-[100]'>
-      <div className='flex items-center justify-between text-offwhite font-bold w-full max-w-4xl mx-auto h-12'>
-        <Home className='cursor-pointer' />
-        <BookOpen className='cursor-pointer' />
-        <Settings className='cursor-pointer' />
+      <div className='flex items-center justify-around text-offwhite font-bold w-full max-w-4xl mx-auto h-12'>
+        <Link href='/'>
+          <Home className='cursor-pointer mr-1' />
+        </Link>
+        {/* <BookOpen className='cursor-pointer' />
+        <Settings className='cursor-pointer' /> */}
         {user ? <SignOut /> : <SignIn />}
       </div>
     </div>

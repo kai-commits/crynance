@@ -19,6 +19,12 @@ interface ModalProps {
   totalAmount: number;
 }
 
+interface IDate {
+  year: string;
+  month: string;
+  day: string;
+}
+
 export const CoinModal = ({
   setModalOpen,
   modalActive,
@@ -31,18 +37,23 @@ export const CoinModal = ({
 }: ModalProps) => {
   const [coinValue, setCoinValue] = useState<string>('0');
   const [usdValue, setUsdValue] = useState<number>(0);
-  const [date, setDate] = useState({year: '0000', month: '00', day: '00'});
+  const [date, setDate] = useState<IDate>({
+    year: '0000',
+    month: '00',
+    day: '00',
+  });
   const [user] = useAuthState(auth);
 
-  const purchaseDate = dayjs(`${date.year}-${date.month}-${date.day}`).format('MMM D, YYYY');
+  const purchaseDate = dayjs(`${date.year}-${date.month}-${date.day}`).format(
+    'MMM D, YYYY'
+  );
 
-  const inputHandler = (event: ChangeEvent<HTMLInputElement>) => {
-    if (event.target.value.length <= 0) {
-      setUsdValue(0);
-    } else {
-      setUsdValue(event.target.valueAsNumber * currentMarketValue);
-    }
+  const coinInputHandler = (event: ChangeEvent<HTMLInputElement>) => {
     setCoinValue(event.target.value);
+  };
+
+  const usdInputHandler = (event: ChangeEvent<HTMLInputElement>) => {
+    setUsdValue(event.target.valueAsNumber);
   };
 
   const transactionHandler = async () => {
@@ -73,18 +84,18 @@ export const CoinModal = ({
   const dateHandler = (event: ChangeEvent<HTMLInputElement>, type: string) => {
     switch (type) {
       case 'year':
-        setDate({...date, year: event.target.value});
+        setDate({ ...date, year: event.target.value });
         break;
       case 'month':
-        setDate({...date, month: event.target.value});
+        setDate({ ...date, month: event.target.value });
         break;
       case 'day':
-        setDate({...date, day: event.target.value});
+        setDate({ ...date, day: event.target.value });
         break;
       default:
         break;
     }
-  }
+  };
 
   if (!modalActive) {
     return <></>;
@@ -105,31 +116,56 @@ export const CoinModal = ({
           <X />
         </button>
         <div className='text-2xl text-darkblue font-semibold p-3'>
-          {modalBuySell === 'buy' ? 'Buy' : 'Sell'} {name}
+          {modalBuySell === 'buy' ? 'Bought' : 'Sold'} {name}
         </div>
         <form className='flex text-green-500'>
           <AutoWidthInput
             type='number'
             min='0'
-            inputHandler={inputHandler}
+            inputHandler={coinInputHandler}
             textSize='text-4xl'
             className='focus-visible:outline-none text-center text-4xl bg-offwhite underline'
+            autoFocus={true}
           />
           <label className='flex items-center text-xl pl-2'>
             {symbol.toUpperCase()}
           </label>
         </form>
-        <form className='flex focus-visible:outline-none bg-offwhite justify-center font-mono'>
-        <input type='number' max={4} min={4} onChange={(event) => dateHandler(event, 'year')} placeholder='YYYY' className='mx-1 w-11 text-center'></input>
-        <input type='number' max={2} min={2} onChange={(event) => dateHandler(event, 'month')} placeholder='MM' className='mx-1 w-6 text-center'></input>
-        <input type='number' max={2} min={2} onChange={(event) => dateHandler(event, 'day')} placeholder='DD' className='mx-1 w-6 text-center'></input>
+        <form className='flex text-xl text-darkblue p-4'>
+          <label>$</label>
+          <AutoWidthInput
+            type='number'
+            min='0'
+            inputHandler={usdInputHandler}
+            textSize='text-xl'
+            className='focus-visible:outline-none text-center text-xl bg-offwhite'
+            autoFocus={false}
+          />
+          <label className='flex text-base items-center'>USD</label>
         </form>
-        <h1>{purchaseDate}</h1>
-        <div className='flex text-xl text-darkblue p-4'>
-          ${roundNumber(usdValue, 2)}
-          <label className='flex text-sm pl-1 items-center'>USD</label>
-        </div>
-        <div className='flex justify-between w-full pb-4 text-blackeye-blue'>
+        <form className='flex focus-visible:outline-none text-darkblue bg-offwhite justify-center font-mono focus:outline-none'>
+          <input
+            type='number'
+            onChange={(event) => dateHandler(event, 'year')}
+            placeholder='YYYY'
+            className='mx-1 px-1 w-14 text-center bg-offwhite placeholder-lightblue focus-visible:outline-lightblue'
+          ></input>
+          <label className='text-lightblue'>/</label>
+          <input
+            type='number'
+            onChange={(event) => dateHandler(event, 'month')}
+            placeholder='MM'
+            className='mx-1 px-1 w-9 text-center bg-offwhite placeholder-lightblue focus-visible:outline-lightblue'
+          ></input>
+          <label className='text-lightblue'>/</label>
+          <input
+            type='number'
+            onChange={(event) => dateHandler(event, 'day')}
+            placeholder='DD'
+            className='mx-1 px-1 w-9 text-center bg-offwhite placeholder-lightblue focus-visible:outline-lightblue'
+          ></input>
+        </form>
+        <div className='flex justify-between w-full py-4 text-blackeye-blue'>
           <div>Current Balance</div>
           <div>
             {roundNumber(totalAmount, 4)} {symbol.toUpperCase()}
@@ -139,7 +175,7 @@ export const CoinModal = ({
           className='bg-lightpink px-4 py-2 rounded font-bold text-darkblue cursor-pointer w-full'
           onClick={() => transactionHandler()}
         >
-          {modalBuySell === 'buy' ? 'Purchase' : 'Sell'}
+          Log Transaction
         </button>
       </div>
     </div>

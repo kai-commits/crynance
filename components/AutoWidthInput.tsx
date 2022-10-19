@@ -6,6 +6,7 @@ interface AutoWidthInputProps {
   textSize: string;
   inputHandler: (event: ChangeEvent<HTMLInputElement>) => void;
   className: string;
+  autoFocus: boolean;
 }
 
 export const AutoWidthInput = ({
@@ -14,6 +15,7 @@ export const AutoWidthInput = ({
   textSize,
   inputHandler,
   className,
+  autoFocus,
 }: AutoWidthInputProps) => {
   const [content, setContent] = useState<string>('0');
   const [width, setWidth] = useState<number>(0);
@@ -44,7 +46,7 @@ export const AutoWidthInput = ({
         onChange={(event) => changeHandler(event)}
         className={className}
         style={{ width }}
-        autoFocus
+        autoFocus={autoFocus}
       ></input>
     </>
   );

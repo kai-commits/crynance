@@ -31,14 +31,14 @@ export const Header = ({
               ${roundNumber(initialPortfolioValue, 2)}
             </div>
           </div>
-          <div className='flex justify-between w-full mb-8'>
+          {/* <div className='flex justify-between w-full mb-8'>
             <button className='bg-lightpink px-4 py-2 rounded font-bold text-darkblue cursor-pointer flex-1 mr-5'>
               Buy
             </button>
             <button className='bg-lightpink px-4 py-2 rounded font-bold text-darkblue cursor-pointer flex-1 ml-5'>
               Sell
             </button>
-          </div>
+          </div> */}
         </div>
       </div>
       <Search filterMarket={filterMarket} marketsResponse={marketsResponse} />

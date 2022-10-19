@@ -251,7 +251,7 @@ const CoinPage: NextPage = (): JSX.Element => {
                       }}
                       className='bg-lightpink px-4 py-2 rounded font-bold text-darkblue cursor-pointer flex-1 mr-5'
                     >
-                      Buy
+                      Bought
                     </button>
 
                     <button
@@ -262,7 +262,7 @@ const CoinPage: NextPage = (): JSX.Element => {
                       }}
                       className='bg-lightpink px-4 py-2 rounded font-bold text-darkblue cursor-pointer flex-1 ml-5'
                     >
-                      Sell
+                      Sold
                     </button>
                   </div>
                 </div>
