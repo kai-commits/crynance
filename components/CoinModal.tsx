@@ -31,9 +31,10 @@ export const CoinModal = ({
 }: ModalProps) => {
   const [coinValue, setCoinValue] = useState<string>('0');
   const [usdValue, setUsdValue] = useState<number>(0);
+  const [date, setDate] = useState({year: '0000', month: '00', day: '00'});
   const [user] = useAuthState(auth);
 
-  const today = dayjs().format('MMM D, YYYY');
+  const purchaseDate = dayjs(`${date.year}-${date.month}-${date.day}`).format('MMM D, YYYY');
 
   const inputHandler = (event: ChangeEvent<HTMLInputElement>) => {
     if (event.target.value.length <= 0) {
@@ -52,7 +53,7 @@ export const CoinModal = ({
           name: name,
           symbol: symbol.toUpperCase(),
           buyOrSell: modalBuySell,
-          date: today,
+          date: purchaseDate,
           coinAmount: Number(coinValue),
           usdAmount: usdValue,
         });
@@ -68,6 +69,22 @@ export const CoinModal = ({
     setModalOpen(false);
     window.location.reload();
   };
+
+  const dateHandler = (event: ChangeEvent<HTMLInputElement>, type: string) => {
+    switch (type) {
+      case 'year':
+        setDate({...date, year: event.target.value});
+        break;
+      case 'month':
+        setDate({...date, month: event.target.value});
+        break;
+      case 'day':
+        setDate({...date, day: event.target.value});
+        break;
+      default:
+        break;
+    }
+  }
 
   if (!modalActive) {
     return <></>;
@@ -102,13 +119,21 @@ export const CoinModal = ({
             {symbol.toUpperCase()}
           </label>
         </form>
+        <form className='flex focus-visible:outline-none bg-offwhite justify-center font-mono'>
+        <input type='number' max={4} min={4} onChange={(event) => dateHandler(event, 'year')} placeholder='YYYY' className='mx-1 w-11 text-center'></input>
+        <input type='number' max={2} min={2} onChange={(event) => dateHandler(event, 'month')} placeholder='MM' className='mx-1 w-6 text-center'></input>
+        <input type='number' max={2} min={2} onChange={(event) => dateHandler(event, 'day')} placeholder='DD' className='mx-1 w-6 text-center'></input>
+        </form>
+        <h1>{purchaseDate}</h1>
         <div className='flex text-xl text-darkblue p-4'>
           ${roundNumber(usdValue, 2)}
           <label className='flex text-sm pl-1 items-center'>USD</label>
         </div>
         <div className='flex justify-between w-full pb-4 text-blackeye-blue'>
           <div>Current Balance</div>
-          <div>{roundNumber(totalAmount, 4)} {symbol.toUpperCase()}</div>
+          <div>
+            {roundNumber(totalAmount, 4)} {symbol.toUpperCase()}
+          </div>
         </div>
         <button
           className='bg-lightpink px-4 py-2 rounded font-bold text-darkblue cursor-pointer w-full'
