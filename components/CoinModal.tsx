@@ -15,8 +15,11 @@ interface ModalProps {
   modalBuySell: string;
   name: string;
   symbol: string;
-  currentMarketValue: number;
   totalAmount: number;
+  coinAmount?: number;
+  usdAmount?: number;
+  dateString?: string;
+  remove?: boolean;
 }
 
 interface IDate {
@@ -32,16 +35,29 @@ export const CoinModal = ({
   modalBuySell,
   name,
   symbol,
-  currentMarketValue,
   totalAmount,
+  coinAmount,
+  usdAmount,
+  dateString,
+  remove,
 }: ModalProps) => {
-  const [coinValue, setCoinValue] = useState<string>('0');
-  const [usdValue, setUsdValue] = useState<number>(0);
-  const [date, setDate] = useState<IDate>({
-    year: '0000',
-    month: '00',
-    day: '00',
-  });
+  const [coinValue, setCoinValue] = useState<string>(
+    coinAmount ? coinAmount.toString() : '0'
+  );
+  const [usdValue, setUsdValue] = useState<number>(usdAmount ? usdAmount : 0);
+  const [date, setDate] = useState<IDate>(
+    dateString
+      ? {
+          year: dayjs(dateString).year().toString(),
+          month: dayjs(dateString).month().toString().padStart(2, '0'),
+          day: dayjs(dateString).day().toString().padStart(2, '0'),
+        }
+      : {
+          year: '0000',
+          month: '00',
+          day: '00',
+        }
+  );
   const [user] = useAuthState(auth);
 
   const purchaseDate = dayjs(`${date.year}-${date.month}-${date.day}`).format(
@@ -126,6 +142,7 @@ export const CoinModal = ({
             textSize='text-4xl'
             className='focus-visible:outline-none text-center text-4xl bg-offwhite underline'
             autoFocus={true}
+            value={coinValue}
           />
           <label className='flex items-center text-xl pl-2'>
             {symbol.toUpperCase()}
@@ -140,12 +157,14 @@ export const CoinModal = ({
             textSize='text-xl'
             className='focus-visible:outline-none text-center text-xl bg-offwhite'
             autoFocus={false}
+            value={usdValue.toString()}
           />
           <label className='flex text-base items-center'>USD</label>
         </form>
         <form className='flex focus-visible:outline-none text-darkblue bg-offwhite justify-center font-mono focus:outline-none'>
           <input
             type='number'
+            value={dateString && date.year}
             onChange={(event) => dateHandler(event, 'year')}
             placeholder='YYYY'
             className='mx-1 px-1 w-14 text-center bg-offwhite placeholder-lightblue focus-visible:outline-lightblue'
@@ -153,6 +172,7 @@ export const CoinModal = ({
           <label className='text-lightblue'>/</label>
           <input
             type='number'
+            value={dateString && date.month}
             onChange={(event) => dateHandler(event, 'month')}
             placeholder='MM'
             className='mx-1 px-1 w-9 text-center bg-offwhite placeholder-lightblue focus-visible:outline-lightblue'
@@ -160,6 +180,7 @@ export const CoinModal = ({
           <label className='text-lightblue'>/</label>
           <input
             type='number'
+            value={dateString && date.day}
             onChange={(event) => dateHandler(event, 'day')}
             placeholder='DD'
             className='mx-1 px-1 w-9 text-center bg-offwhite placeholder-lightblue focus-visible:outline-lightblue'

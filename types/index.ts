@@ -5,6 +5,7 @@ export interface TransactionLog {
   name: string;
   symbol: string;
   usdAmount: number;
+  totalAmount: number;
 }
 
 export interface ParsedCoin {

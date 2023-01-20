@@ -1,4 +1,8 @@
-import { setDoc, doc, arrayUnion, getDoc, updateDoc } from 'firebase/firestore';
+import {
+  setDoc,
+  doc,
+  arrayUnion,
+} from 'firebase/firestore';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { db } from '../../../firebase';
 

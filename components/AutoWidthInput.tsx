@@ -7,6 +7,7 @@ interface AutoWidthInputProps {
   inputHandler: (event: ChangeEvent<HTMLInputElement>) => void;
   className: string;
   autoFocus: boolean;
+  value?: string;
 }
 
 export const AutoWidthInput = ({
@@ -16,8 +17,9 @@ export const AutoWidthInput = ({
   inputHandler,
   className,
   autoFocus,
+  value,
 }: AutoWidthInputProps) => {
-  const [content, setContent] = useState<string>('0');
+  const [content, setContent] = useState<string>(value ? value : '0');
   const [width, setWidth] = useState<number>(0);
   const span = useRef<HTMLSpanElement>(null);
 

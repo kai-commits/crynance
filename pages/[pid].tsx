@@ -269,9 +269,13 @@ const CoinPage: NextPage = (): JSX.Element => {
               </div>
               {transactions.length > 0 ? (
                 <div className='flex flex-col grow bg-lightblue'>
-                  <div className='flex flex-col items-center px-5 pb-3'>
+                  <div className='flex flex-col px-5 pb-3'>
                     {transactions.map((transaction, index) => (
-                      <Transaction key={index} {...transaction} />
+                      <Transaction
+                        key={index}
+                        {...transaction}
+                        totalAmount={totalCoinData.totalAmount}
+                      />
                     ))}
                   </div>
                 </div>
@@ -288,7 +292,6 @@ const CoinPage: NextPage = (): JSX.Element => {
               modalBuySell={modalBuySell}
               name={coinDataResponse.name}
               symbol={coinDataResponse.symbol}
-              currentMarketValue={coinDataResponse.currentMarketValue}
               totalAmount={totalCoinData.totalAmount}
             />
           </div>
