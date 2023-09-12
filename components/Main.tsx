@@ -7,7 +7,7 @@ interface MainProps {
 
 export const Main = ({ filteredMarket }: MainProps): JSX.Element => {
   return (
-    <div className='flex items-center flex-col bg-lightblue px-5 h-max pb-3 min-h-screen'>
+    <div className='flex flex-col items-center min-h-screen px-5 pb-12 overflow-y-hidden sm:border-black pt-9 bg-lightblue h-max sm:border-x-8'>
       {filteredMarket?.map((coin: ParsedMarkets) => (
         <Coin
           key={coin.id}

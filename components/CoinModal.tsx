@@ -118,87 +118,85 @@ export const CoinModal = ({
   }
 
   return (
-    <div
-      className={classNames([
-        modalOpen ? 'animate-slideUp' : 'animate-slideDown',
-        'fixed z-[500] bottom-0 right-0 left-0 bg-offwhite rounded-t-lg max-w-4xl mx-auto pb-5 transition-all duration-1000',
-      ])}
-    >
-      <div className='flex flex-col items-center px-5'>
-        <button
-          onClick={() => setModalOpen(false)}
-          className='absolute top-0 right-0 p-2 text-darkblue'
-        >
-          <X />
-        </button>
-        <div className='text-2xl text-darkblue font-semibold p-3'>
-          {modalBuySell === 'buy' ? 'Bought' : 'Sold'} {name}
-        </div>
-        <form className='flex text-green-500'>
-          <AutoWidthInput
-            type='number'
-            min='0'
-            inputHandler={coinInputHandler}
-            textSize='text-4xl'
-            className='focus-visible:outline-none text-center text-4xl bg-offwhite underline'
-            autoFocus={true}
-            value={coinValue}
-          />
-          <label className='flex items-center text-xl pl-2'>
-            {symbol.toUpperCase()}
-          </label>
-        </form>
-        <form className='flex text-xl text-darkblue p-4'>
-          <label>$</label>
-          <AutoWidthInput
-            type='number'
-            min='0'
-            inputHandler={usdInputHandler}
-            textSize='text-xl'
-            className='focus-visible:outline-none text-center text-xl bg-offwhite'
-            autoFocus={false}
-            value={usdValue.toString()}
-          />
-          <label className='flex text-base items-center'>USD</label>
-        </form>
-        <form className='flex focus-visible:outline-none text-darkblue bg-offwhite justify-center font-mono focus:outline-none'>
-          <input
-            type='number'
-            value={dateString && date.year}
-            onChange={(event) => dateHandler(event, 'year')}
-            placeholder='YYYY'
-            className='mx-1 px-1 w-14 text-center bg-offwhite placeholder-lightblue focus-visible:outline-lightblue'
-          ></input>
-          <label className='text-lightblue'>/</label>
-          <input
-            type='number'
-            value={dateString && date.month}
-            onChange={(event) => dateHandler(event, 'month')}
-            placeholder='MM'
-            className='mx-1 px-1 w-9 text-center bg-offwhite placeholder-lightblue focus-visible:outline-lightblue'
-          ></input>
-          <label className='text-lightblue'>/</label>
-          <input
-            type='number'
-            value={dateString && date.day}
-            onChange={(event) => dateHandler(event, 'day')}
-            placeholder='DD'
-            className='mx-1 px-1 w-9 text-center bg-offwhite placeholder-lightblue focus-visible:outline-lightblue'
-          ></input>
-        </form>
-        <div className='flex justify-between w-full py-4 text-blackeye-blue'>
-          <div>Current Balance</div>
-          <div>
-            {roundNumber(totalAmount, 4)} {symbol.toUpperCase()}
+    <>
+      <div className='sm:fixed absolute sm:left-1/2 sm:top-9 top-0 sm:bottom-9 sm:rounded-[3.5rem] sm:-ml-[12.5rem] z-40 sm:w-[25rem] w-full h-full sm:h-auto bg-black opacity-60' />
+      <div className='fixed z-50 sm:bottom-11 bottom-0 right-0 left-0 bg-offwhite sm:rounded-t-3xl sm:rounded-b-[3.5rem] sm:w-[25rem] rounded-t-xl w-full mx-auto pb-6'>
+        <div className='flex flex-col items-center px-5'>
+          <button
+            onClick={() => setModalOpen(false)}
+            className='absolute top-0 right-0 p-2 text-darkblue'
+          >
+            <X />
+          </button>
+          <div className='p-3 text-2xl font-semibold text-darkblue'>
+            {modalBuySell === 'buy' ? 'Bought' : 'Sold'} {name}
           </div>
+          <form className='flex text-green-500'>
+            <AutoWidthInput
+              type='number'
+              min='0'
+              inputHandler={coinInputHandler}
+              textSize='text-4xl'
+              className='text-4xl text-center underline focus-visible:outline-none bg-offwhite'
+              autoFocus={true}
+              value={coinValue}
+            />
+            <label className='flex items-center pl-2 text-xl'>
+              {symbol.toUpperCase()}
+            </label>
+          </form>
+          <form className='flex p-4 text-xl text-darkblue'>
+            <label>$</label>
+            <AutoWidthInput
+              type='number'
+              min='0'
+              inputHandler={usdInputHandler}
+              textSize='text-xl'
+              className='text-xl text-center focus-visible:outline-none bg-offwhite'
+              autoFocus={false}
+              value={usdValue.toString()}
+            />
+            <label className='flex items-center text-base'>USD</label>
+          </form>
+          <form className='flex justify-center font-mono focus-visible:outline-none text-darkblue bg-offwhite focus:outline-none'>
+            <input
+              type='number'
+              value={dateString && date.year}
+              onChange={(event) => dateHandler(event, 'year')}
+              placeholder='YYYY'
+              className='px-1 mx-1 text-center w-14 bg-offwhite placeholder-lightblue focus-visible:outline-lightblue'
+            ></input>
+            <label className='text-lightblue'>/</label>
+            <input
+              type='number'
+              value={dateString && date.month}
+              onChange={(event) => dateHandler(event, 'month')}
+              placeholder='MM'
+              className='px-1 mx-1 text-center w-9 bg-offwhite placeholder-lightblue focus-visible:outline-lightblue'
+            ></input>
+            <label className='text-lightblue'>/</label>
+            <input
+              type='number'
+              value={dateString && date.day}
+              onChange={(event) => dateHandler(event, 'day')}
+              placeholder='DD'
+              className='px-1 mx-1 text-center w-9 bg-offwhite placeholder-lightblue focus-visible:outline-lightblue'
+            ></input>
+          </form>
+          <div className='flex justify-between w-full py-4 text-blackeye-blue'>
+            <div>Current Balance</div>
+            <div>
+              {roundNumber(totalAmount, 4)} {symbol.toUpperCase()}
+            </div>
+          </div>
+          <button
+            className='w-full px-4 py-2 font-bold rounded-lg cursor-pointer sm:rounded-full bg-lightpink text-darkblue'
+            onClick={() => transactionHandler()}
+          >
+            Log Transaction
+          </button>
         </div>
-        <button
-          className='bg-lightpink px-4 py-2 rounded font-bold text-darkblue cursor-pointer w-full'
-          onClick={() => transactionHandler()}
-        >
-          Log Transaction
-        </button>
       </div>
-    </div>
+    </>
   );
 };

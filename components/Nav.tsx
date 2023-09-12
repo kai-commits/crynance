@@ -9,10 +9,10 @@ export const Nav = (): JSX.Element => {
   const [user] = useAuthState(auth);
 
   return (
-    <div className='flex px-5 bg-blackeye-blue w-full sticky bottom-0 z-[100]'>
-      <div className='flex items-center justify-around text-offwhite font-bold w-full max-w-4xl mx-auto h-12'>
+    <div className='sticky sm:bottom-9 bottom-0 sm:rounded-b-[4rem] z-30 flex w-full px-5 pb-1 bg-blackeye-blue sm:border-black sm:border-x-8 sm:border-b-8'>
+      <div className='flex items-center justify-around w-full h-12 max-w-4xl mx-auto font-bold text-offwhite'>
         <Link href='/'>
-          <Home className='cursor-pointer mr-1' />
+          <Home className='mr-1 cursor-pointer' />
         </Link>
         {/* <BookOpen className='cursor-pointer' />
         <Settings className='cursor-pointer' /> */}

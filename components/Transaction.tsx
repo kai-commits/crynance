@@ -18,14 +18,14 @@ export const Transaction = ({
   return (
     <>
       <button
-        onClick={() => {
-          setModalActive(true);
-          setModalOpen(!modalOpen);
-          setModalBuySell('sell');
-        }}
-        className='w-full bg-offwhite max-w-4xl py-2 mt-3 rounded cursor-pointer'
+        // onClick={() => {
+        //   setModalActive(true);
+        //   setModalOpen(!modalOpen);
+        //   setModalBuySell('sell');
+        // }}
+        className='w-full max-w-4xl py-2 mt-3 rounded cursor-pointer bg-offwhite'
       >
-        <div className='flex justify-between items-center'>
+        <div className='flex items-center justify-between'>
           <div className='flex items-center mx-3'>
             <div className='flex flex-col font-medium'>
               <div className='flex text-lg text-blackeye-blue'>
@@ -44,7 +44,7 @@ export const Transaction = ({
           </div>
         </div>
       </button>
-      <CoinModal
+      {/* <CoinModal
         setModalOpen={setModalOpen}
         modalActive={modalActive}
         modalOpen={modalOpen}
@@ -56,7 +56,7 @@ export const Transaction = ({
         usdAmount={usdAmount}
         dateString={date}
         remove={true}
-      />
+      /> */}
     </>
   );
 };

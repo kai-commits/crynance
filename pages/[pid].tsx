@@ -171,119 +171,111 @@ const CoinPage: NextPage = (): JSX.Element => {
   };
 
   if (!coinDataResponse) {
-    return <div className='bg-darkblue w-full h-screen'></div>;
+    return <div className='w-full h-screen bg-gray-500'></div>;
   } else {
     return (
       <>
-        <div className='w-full h-full bg-blackeye-blue'>
-          <div className='flex flex-col min-h-screen justify-between bg-darkblue max-w-4xl mx-auto'>
-            <ConditionWrapper
-              condition={modalOpen}
-              wrapper={(children) => (
-                <div className='bg-black opacity-60 w-full h-full z-50'>
-                  {children}
+        <div className='w-full h-full bg-gray-500'>
+          <div className='flex flex-col justify-between sm:w-[26rem] w-full min-h-screen mx-auto bg-darkblue'>
+            <div className='fixed top-0 z-20 h-24 bg-gray-500 sm:w-full' />
+            <div className='sticky sm:top-9 top-0 z-30 flex-col items-center px-5 pb-6 bg-darkblue sm:rounded-t-[4rem] sm:border-black sm:border-t-8 sm:border-x-8'>
+              <div className='w-full mt-6'>
+                <div className='flex justify-center p-4 text-3xl font-bold cursor-pointer text-lightpink'>
+                  {coinDataResponse.name}
                 </div>
-              )}
-            >
-              <div className='flex flex-col items-center px-5'>
-                <div className='w-full max-w-4xl'>
-                  <div className='flex justify-center text-lightpink text-3xl font-bold cursor-pointer p-4'>
-                    {coinDataResponse.name}
+                <div className='flex text-xl justify-evenly'>
+                  <div className='pr-3 text-offwhite'>
+                    ${roundNumber(coinDataResponse.currentMarketValue, 5)}
                   </div>
-                  <div className='flex justify-evenly text-xl'>
-                    <div className='text-offwhite pr-3'>
-                      ${roundNumber(coinDataResponse.currentMarketValue, 5)}
+                  {percentageChange >= 0 ? (
+                    <div className='flex text-green-500'>
+                      {percentageChange}%
+                      <TrendingUp className='pt-1 ml-1' />
                     </div>
-                    {percentageChange >= 0 ? (
-                      <div className='flex text-green-500'>
-                        {percentageChange}%
-                        <TrendingUp className='ml-1 pt-1' />
-                      </div>
-                    ) : (
-                      <div className='flex text-red-500'>
-                        {percentageChange}%
-                        <TrendingDown className='ml-1 pt-1' />
-                      </div>
-                    )}
-                  </div>
+                  ) : (
+                    <div className='flex text-red-500'>
+                      {percentageChange}%
+                      <TrendingDown className='pt-1 ml-1' />
+                    </div>
+                  )}
                 </div>
               </div>
-              <div className='w-full mx-auto max-w-4xl'>
-                {pid && <LineChart queryParams={queryParams} pid={pid} />}
-              </div>
-              <div className='flex flex-col items-center px-5'>
-                <div className='w-full max-w-4xl'>
-                  <div className='flex justify-between'>
-                    {timeRangeButtons.map((button, index) => (
-                      <button
-                        key={index}
-                        className={timeRangeButtonClasses(button)}
-                        onClick={() => timeButtonHandler(button)}
-                      >
-                        {button.name}
-                      </button>
-                    ))}
-                  </div>
-                  <div className='flex flex-col'>
-                    <div className='flex justify-center text-lightpink text-xl my-5'>
-                      {roundNumber(totalCoinData.totalAmount, 4)}{' '}
-                      {coinDataResponse.symbol.toUpperCase()}
-                    </div>
-                    <div className='flex justify-between text-offwhite'>
-                      <div>Current Balance</div>
-                      <div>
-                        ${roundNumber(totalCoinData.totalCurrentValue, 2)}
-                      </div>
-                    </div>
-                    <div className='flex justify-between text-lightblue'>
-                      <div>Starting Balance</div>
-                      <div>
-                        ${roundNumber(totalCoinData.totalInitialValue, 2)}
-                      </div>
-                    </div>
-                  </div>
-                  <div className='flex justify-between w-full my-8'>
+            </div>
+            <div className='w-full mx-auto sm:border-black sm:border-x-8'>
+              {pid && <LineChart queryParams={queryParams} pid={pid} />}
+            </div>
+            <div className='flex flex-col items-center px-5 sm:border-black sm:border-x-8'>
+              <div className='w-full max-w-4xl'>
+                <div className='flex justify-between'>
+                  {timeRangeButtons.map((button, index) => (
                     <button
-                      onClick={() => {
-                        setModalActive(true);
-                        setModalOpen(!modalOpen);
-                        setModalBuySell('buy');
-                      }}
-                      className='bg-lightpink px-4 py-2 rounded font-bold text-darkblue cursor-pointer flex-1 mr-5'
+                      key={index}
+                      className={timeRangeButtonClasses(button)}
+                      onClick={() => timeButtonHandler(button)}
                     >
-                      Bought
+                      {button.name}
                     </button>
+                  ))}
+                </div>
+                <div className='flex flex-col'>
+                  <div className='flex justify-center my-5 text-xl text-lightpink'>
+                    {roundNumber(totalCoinData.totalAmount, 4)}{' '}
+                    {coinDataResponse.symbol.toUpperCase()}
+                  </div>
+                  <div className='flex justify-between text-offwhite'>
+                    <div>Current Balance</div>
+                    <div>
+                      ${roundNumber(totalCoinData.totalCurrentValue, 2)}
+                    </div>
+                  </div>
+                  <div className='flex justify-between text-lightblue'>
+                    <div>Starting Balance</div>
+                    <div>
+                      ${roundNumber(totalCoinData.totalInitialValue, 2)}
+                    </div>
+                  </div>
+                </div>
+                <div className='flex justify-between w-full my-8'>
+                  <button
+                    onClick={() => {
+                      setModalActive(true);
+                      setModalOpen(!modalOpen);
+                      setModalBuySell('buy');
+                    }}
+                    className='flex-1 px-4 py-2 mr-5 font-bold rounded cursor-pointer bg-lightpink text-darkblue'
+                  >
+                    Bought
+                  </button>
 
-                    <button
-                      onClick={() => {
-                        setModalActive(true);
-                        setModalOpen(!modalOpen);
-                        setModalBuySell('sell');
-                      }}
-                      className='bg-lightpink px-4 py-2 rounded font-bold text-darkblue cursor-pointer flex-1 ml-5'
-                    >
-                      Sold
-                    </button>
-                  </div>
+                  <button
+                    onClick={() => {
+                      setModalActive(true);
+                      setModalOpen(!modalOpen);
+                      setModalBuySell('sell');
+                    }}
+                    className='flex-1 px-4 py-2 ml-5 font-bold rounded cursor-pointer bg-lightpink text-darkblue'
+                  >
+                    Sold
+                  </button>
                 </div>
               </div>
-              {transactions.length > 0 ? (
-                <div className='flex flex-col grow bg-lightblue'>
-                  <div className='flex flex-col px-5 pb-3'>
-                    {transactions.map((transaction, index) => (
-                      <Transaction
-                        key={index}
-                        {...transaction}
-                        totalAmount={totalCoinData.totalAmount}
-                      />
-                    ))}
-                  </div>
+            </div>
+            {transactions.length > 0 ? (
+              <div className='flex flex-col sm:border-black grow bg-lightblue sm:border-x-8'>
+                <div className='flex flex-col px-5 pb-12'>
+                  {transactions.map((transaction, index) => (
+                    <Transaction
+                      key={index}
+                      {...transaction}
+                      totalAmount={totalCoinData.totalAmount}
+                    />
+                  ))}
                 </div>
-              ) : (
-                <></>
-              )}
-              <Nav />
-            </ConditionWrapper>
+              </div>
+            ) : (
+              <></>
+            )}
+            <Nav />
 
             <CoinModal
               setModalOpen={setModalOpen}
@@ -295,6 +287,7 @@ const CoinPage: NextPage = (): JSX.Element => {
               totalAmount={totalCoinData.totalAmount}
             />
           </div>
+          <div className='fixed bottom-0 z-20 h-24 bg-gray-500 sm:w-full' />
         </div>
       </>
     );

@@ -15,6 +15,7 @@ const Home: NextPage = () => {
   const [currentPortfolioValue, setCurrentPortfolioValue] = useState<number>(0);
   const [marketsResponse, setMarketsResponse] = useState<ParsedMarkets[]>([]);
   const [filteredMarket, setFilteredMarket] = useState<ParsedMarkets[]>([]);
+  const [mounted, setMounted] = useState(false);
 
   const filterMarket = useCallback(
     (marketData: ParsedMarkets[], query: string) => {
@@ -56,27 +57,38 @@ const Home: NextPage = () => {
     }
   }, [marketsResponse]);
 
-  return (
-    <>
-      <Head>
-        <title>Crynance</title>
-        <meta name='crypto finance tracker' content='' />
-        <link rel='icon' href='/favicon.ico' />
-      </Head>
-      <div className='w-full h-full bg-blackeye-blue'>
-        <div className='flex flex-col justify-between h-max mx-auto min-w-fit max-w-4xl'>
-          <Header
-            filterMarket={filterMarket}
-            initialPortfolioValue={initialPortfolioValue}
-            currentPortfolioValue={currentPortfolioValue}
-            marketsResponse={marketsResponse}
-          />
-          <Main filteredMarket={filteredMarket} />
-          <Nav />
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) {
+    return <div className='w-full h-screen bg-gray-400'></div>;
+  } else {
+    return (
+      <>
+        <Head>
+          <title>Crynance</title>
+          <meta name='crypto finance tracker' content='' />
+          <link rel='icon' href='/favicon.ico' />
+        </Head>
+        <div className='fixed z-10 w-full h-24 bg-gray-500' />
+
+        <div className='z-10 w-full h-full bg-gray-500'>
+          <div className='flex flex-col justify-between sm:w-[26rem] mx-auto h-max min-w-fit'>
+            <Header
+              filterMarket={filterMarket}
+              initialPortfolioValue={initialPortfolioValue}
+              currentPortfolioValue={currentPortfolioValue}
+              marketsResponse={marketsResponse}
+            />
+            <Main filteredMarket={filteredMarket} />
+            <Nav />
+          </div>
         </div>
-      </div>
-    </>
-  );
+        <div className='fixed bottom-0 z-10 h-24 bg-gray-500 sm:w-full' />
+      </>
+    );
+  }
 };
 
 export default Home;
